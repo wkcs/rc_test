@@ -1,0 +1,1 @@
+C_SRCS += $(wildcard $(TOP_DIR)/cmsis/st_lib/src/*.c)
