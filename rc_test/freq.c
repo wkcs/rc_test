@@ -1,28 +1,36 @@
 #include "freq.h"
-#include "timer.h"
 #include "test_type.h"
+#include "rc_err.h"
 
-uint32_t get_frequency(uint16_t test_num)
+int32_t get_freq(uint16_t test_num)
 {
 	uint32_t temp = 0, freq;
-    test_data.freq_data.timer_num = 0;
-	freq_num = 0;
-	freq_test_num = test_num;
-	__HAL_TIM_ENABLE(&TIM2_Handler);              /*使能定时器2*/
-	while((TIM2CH1_CAPTURE_STA&0X80)==0);         /*等待采集完成*/
-	freq_test_num = 10000;                        /*采集完成恢复默认值*/
-	if (TIM2CH1_CAPTURE_STA == 0xff && TIM2CH1_CAPTURE_VAL == 0xffff) {
-		return 0;
+	uint8_t i = 0;
+try_again:
+	test_data.freq_data.status = 1;
+	test_data.freq_data.need_num = test_num;
+	TIM_SetCounter(TIM2, 0);
+	TIM_Cmd(TIM2, ENABLE); //使能定时器2
+	while (test_data.freq_data.status < 3)
+	{
+		//printf("wait\t\n");
+	} //等待采集完成
+	if (test_data.freq_data.status != 3)
+	{
+		test_data.freq_data.status = 0;
+		return -NO_FREQ;
 	}
-	else {
-		temp = (TIM2CH1_CAPTURE_STA & 0X3F) * 65536;
-		temp += (uint16_t)TIM2CH1_CAPTURE_VAL;
-		freq = (uint32_t)((uint64_t)1000000 * freq_num / (uint64_t)temp);
+	else
+	{
+		if(test_data.freq_data.timer_updata_num == 0 && test_data.freq_data.timer_data < 10 && i < 5)
+		{
+			i++;
+			goto try_again;
+		}
+		temp = test_data.freq_data.timer_updata_num * 65536;
+		temp += test_data.freq_data.timer_data;
+		freq = (uint32_t)((uint64_t)1000000 * (test_data.freq_data.get_num) / (uint64_t)temp);
+		test_data.freq_data.status = 0;
 		return freq;
 	}
 }
-
-
-
-
-

@@ -3,7 +3,7 @@
 
 #include "sys.h"
 
-uint32_t get_freq(uint16_t test_num);
+int32_t get_freq(uint16_t test_num);
 
 #endif
 

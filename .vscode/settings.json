@@ -1,5 +1,12 @@
 {
     "files.associations": {
-        "adc.h": "c"
+        "adc.h": "c",
+        "stm32f4xx.h": "c",
+        "board.h": "c",
+        "w25qxx.h": "c",
+        "usart.h": "c",
+        "timer.h": "c",
+        "freq.h": "c",
+        "test_current.h": "c"
     }
 }

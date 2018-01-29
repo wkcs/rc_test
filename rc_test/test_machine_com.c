@@ -30,8 +30,8 @@ void test_mach_init(void)
     EXTI_Init(&EXTI_InitStructure);//配置
 
     NVIC_InitStructure.NVIC_IRQChannel = EXTI2_IRQn;//外部中断2
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x00;//抢占优先级3
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x00;//子优先级2
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;//抢占优先级3
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;//子优先级2
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;//使能外部中断通道
     NVIC_Init(&NVIC_InitStructure);//配置
 
@@ -124,13 +124,13 @@ void test_mach_send_end_sig(uint8_t bin)
             EOT = 1;
             BIN8 = 1;
             break;
-        test_para.test_machine_para.test_start = DISABLE;
+        test_data.test_machine_data.test_start = DISABLE;
     }
 }  
 
 void EXTI2_IRQHandler(void)
 {
-	test_para.test_machine_para.test_start = ENABLE;	 
+	test_data.test_machine_data.test_start = ENABLE;	 
 	EXTI_ClearITPendingBit(EXTI_Line2);//清除LINE2上的中断标志位 
 }
 

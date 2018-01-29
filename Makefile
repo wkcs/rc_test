@@ -64,6 +64,7 @@ INC_DIR = -I $(TOP_DIR)/board/v3          \
 		  -I $(TOP_DIR)/cmsis/st_lib/inc  \
 		  -I $(TOP_DIR)/com               \
 		  -I $(TOP_DIR)/drivers           \
+		  -I $(TOP_DIR)/hal/inc           \
 		  -I $(TOP_DIR)/init              \
           -I $(TOP_DIR)/kernel            \
           -I $(TOP_DIR)/lib               \
@@ -120,6 +121,7 @@ LDFLAGS += -T $(LDSCRIPT)
 -include $(TOP_DIR)/cmsis/st_lib/make.inc
 -include $(TOP_DIR)/com/make.inc
 -include $(TOP_DIR)/drivers/make.inc
+#-include $(TOP_DIR)/hal/make.inc
 -include $(TOP_DIR)/init/make.inc
 -include $(TOP_DIR)/kernel/make.inc
 -include $(TOP_DIR)/lib/make.inc
