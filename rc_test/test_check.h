@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-int32_t check_horse_wide(void);
+int32_t check_code_width(void);
 
 #ifdef __cplusplus
 }

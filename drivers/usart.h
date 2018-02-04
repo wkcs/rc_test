@@ -15,6 +15,7 @@ typedef struct __uart_data
 
 void uart1_init(u32 bound);
 void uart3_init(u32 bound);
+void send_data_to_uart1(uint8_t *buf, uint8_t len);
 
 extern uart_data_t uart1_data, uart3_data;
 

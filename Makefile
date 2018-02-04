@@ -1,7 +1,7 @@
 #工程的名称及最后生成文件的名字
 TARGET = rc11x_test
 
-RM := rm
+RM := rm -rf
 
 #打开显示选项
 ifneq ($(V),1)
@@ -25,7 +25,7 @@ endif
 
 
 #定义工具链
-PREFIX		?= arm-none-eabi
+PREFIX		:= arm-none-eabi
 CC		    := $(PREFIX)-gcc
 CXX		    := $(PREFIX)-g++
 LD		    := $(PREFIX)-gcc
@@ -41,20 +41,21 @@ TOP_DIR = .
 
 # 宏定义
 #DEFS		= -D ARM_MATH_CM4=1U -D STM32F407xx -D USE_HAL_DRIVER -D __MPU_PRESENT=1U
-DEFS		= -D STM32F40_41xxx -D USE_STDPERIPH_DRIVER
+DEFS		= -D STM32F40_41xxx -D USE_STDPERIPH_DRIVER -D __VFP_FP__
 
 #链接脚本
 LDSCRIPT    = $(TOP_DIR)/stm32_flash.ld
 
 # 架构相关编译指令
-#FP_FLAGS	= -mfloat-abi=hard -mfpu=fpv4-sp-d16
-FP_FLAGS	= -msoft-float
+#使用硬件fpu
+FP_FLAGS	= -mfloat-abi=hard -mfpu=fpv4-sp-d16
+#FP_FLAGS	= -msoft-float
 ARCH_FLAGS	= -mthumb -mcpu=cortex-m4
 
 # OpenOCD specific variables
 OOCD		:= openocd
 OOCD_INTERFACE	:= flossjtag
-OOCD_TARGET	:= stm32f1x
+OOCD_TARGET	:= stm32f4x
 OOCDFLAGS := -f openocd.cfg
 
 #设定包含文件目录
@@ -68,7 +69,8 @@ INC_DIR = -I $(TOP_DIR)/board/v3          \
 		  -I $(TOP_DIR)/init              \
           -I $(TOP_DIR)/kernel            \
           -I $(TOP_DIR)/lib               \
-          -I $(TOP_DIR)/rc_test           
+          -I $(TOP_DIR)/rc_test           \
+		  -I $(TOP_DIR)/cmd
 
 #SOURCE_DIRS = $(TOP_DIR)/core          \
               $(TOP_DIR)/cmd           \
@@ -126,6 +128,7 @@ LDFLAGS += -T $(LDSCRIPT)
 -include $(TOP_DIR)/kernel/make.inc
 -include $(TOP_DIR)/lib/make.inc
 -include $(TOP_DIR)/rc_test/make.inc
+-include $(TOP_DIR)/cmd/make.inc
 
 
  
@@ -140,13 +143,13 @@ SECONDARY_SIZE = $(TARGET).siz
 SECONDARY_BIN = $(TARGET).bin
 
 
-.PHONY: images clean elf bin hex list debug stlink-flash style-code flash debug_file
+.PHONY: images clean size bin hex size list debug stlink-flash style-code flash debug_file
 
 
 all: $(TARGET).images
 	@echo   building done
 
-elf: $(TARGET).elf
+size: $(TARGET).elf
 	@echo   SIZE    $(TARGET).elf
 	$(Q)$(SIZE) --format=berkeley "$(TARGET).elf"
 
@@ -154,10 +157,10 @@ bin: $(TARGET).bin
 
 hex: $(TARGET).hex
 
-style-code:
-	sh $(TOP_DIR)/buildtool/stylecode.sh
+#style-code:
+#	sh $(TOP_DIR)/buildtool/stylecode.sh
 
-$(TARGET).images: $(TARGET).bin $(TARGET).hex $(TARGET).list $(TARGET).map
+$(TARGET).images: $(TARGET).bin $(TARGET).hex $(TARGET).list
 	$(Q)echo   images generated
 
 
@@ -175,7 +178,7 @@ $(TARGET).hex: $(TARGET).elf
 
 
 $(TARGET).bin: $(TARGET).elf
-	@echo   OBJCOPY $(TARGET).bin\n
+	@echo   OBJCOPY $(TARGET).bin
 	$(Q)$(OBJCOPY) $(TARGET).elf  $(TARGET).bin -Obinary
 
 $(TARGET).list: $(TARGET).elf

@@ -1,6 +1,14 @@
 #include "freq.h"
 #include "test_type.h"
 #include "rc_err.h"
+#include "dma.h"
+
+static uint16_t freq_data[10000];
+
+void freq_init(void)
+{
+	//DMA_config(DMA1_Stream1, DMA_Channel_3, (uint32_t)&TIM2->CCR3, (uint32_t)freq_data, 10000);
+}
 
 int32_t get_freq(uint16_t test_num)
 {
@@ -33,4 +41,17 @@ try_again:
 		test_data.freq_data.status = 0;
 		return freq;
 	}
+	/*uint8_t i;
+	TIM_SetCounter(TIM2, 0);
+	DMA_Cmd(DMA1_Stream1, ENABLE);
+	TIM_Cmd(TIM2, ENABLE);
+	while(DMA_GetFlagStatus(DMA2_Stream7,DMA_FLAG_TCIF7) == RESET);//等待DMA2_Steam7传输完成
+	DMA_ClearFlag(DMA2_Stream7,DMA_FLAG_TCIF7);//清除DMA2_Steam7传输完成标志
+	for(i = 0; i < 10000; i++)
+	{
+		printf("%d:%d\r\n", i, freq_data[i]);
+	}
+	TIM_Cmd(TIM2, DISABLE);
+	//DMA_Cmd(DMA1_Stream1, DISABLE);
+	return 0;*/
 }

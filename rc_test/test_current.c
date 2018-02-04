@@ -2,6 +2,7 @@
 #include "board.h"
 #include "test_type.h"
 #include "test_signal.h"
+#include "rc_debug.h"
 
 int32_t standby_current_test(void)
 {
@@ -12,9 +13,10 @@ int32_t standby_current_test(void)
     }
     if (test_data.test_mod != NORMAL_MODE)
         exit_test();
-
     standby_current = get_socket_current(100);
-    printf("standby_current:%d\r\n", standby_current);
+    test_save.current_save.standby_current = standby_current;
+    if (test_para.debug_para.debug_info_en)
+        rc_printf("standby_current:%d\r\n", standby_current);
     if (standby_current > test_para.current_para.standby_current_max)
         return -STANDBY_CURRENT_ERR;
     return 0;
@@ -22,10 +24,7 @@ int32_t standby_current_test(void)
 
 int32_t work_current_test(void)
 {
-    uint16_t work_current, work_current2, work_current3, work_current4, work_current5;
-    uint16_t work_current6, work_current7, work_current8, work_current9, work_current10;
-    uint16_t work_current11, work_current12, work_current13, work_current14, work_current15;
-    uint16_t work_current16, work_current17, work_current18, work_current19, work_current20;
+    uint16_t work_current;
     if (test_data.power_data.status == POWER_OFF)
     {
         power_on(test_para.power_para.open_time);
@@ -34,31 +33,9 @@ int32_t work_current_test(void)
         exit_test();
 
     K0 = 1;
-    //work_current = get_socket_current(20);
-    work_current = get_socket_current_one();
-    work_current2 = get_socket_current_one();
-    work_current3 = get_socket_current_one();
-    work_current4 = get_socket_current_one();
-    work_current5 = get_socket_current_one();
-    work_current6 = get_socket_current_one();
-    work_current7 = get_socket_current_one();
-    work_current8 = get_socket_current_one();
-    work_current9 = get_socket_current_one();
-    work_current10 = get_socket_current_one();
-    work_current11 = get_socket_current_one();
-    work_current12 = get_socket_current_one();
-    work_current13 = get_socket_current_one();
-    work_current14 = get_socket_current_one();
-    work_current15 = get_socket_current_one();
-    work_current16 = get_socket_current_one();
-    work_current17 = get_socket_current_one();
-    work_current18 = get_socket_current_one();
-    work_current19 = get_socket_current_one();
-    work_current20 = get_socket_current_one();
-    printf("work_current:%d, %d, %d, %d, %d\r\n", work_current, work_current2, work_current3, work_current4, work_current5);
-    printf("work_current:%d, %d, %d, %d, %d\r\n", work_current6, work_current7, work_current8, work_current9, work_current10);
-    printf("work_current:%d, %d, %d, %d, %d\r\n", work_current11, work_current12, work_current13, work_current14, work_current15);
-    printf("work_current:%d, %d, %d, %d, %d\r\n", work_current16, work_current17, work_current18, work_current19, work_current20);
+    work_current = get_socket_current(20);
+    if (test_para.debug_para.debug_info_en)
+        rc_printf("work_current_k0:%d\r\n", work_current);
     test_save.current_save.work_current_k0 = work_current;
     if (work_current < test_para.current_para.work_current_min || work_current > test_para.current_para.work_current_max)
     {
@@ -68,13 +45,9 @@ int32_t work_current_test(void)
     K0 = 0;
 
     K1 = 1;
-    //work_current = get_socket_current(20);
-    work_current = get_socket_current_one();
-    work_current2 = get_socket_current_one();
-    work_current3 = get_socket_current_one();
-    work_current4 = get_socket_current_one();
-    work_current5 = get_socket_current_one();
-    printf("work_current:%d, %d, %d, %d, %d\r\n", work_current, work_current2, work_current3, work_current4, work_current5);
+    work_current = get_socket_current(20);
+    if (test_para.debug_para.debug_info_en)
+        rc_printf("work_current_k1:%d\r\n", work_current);
     test_save.current_save.work_current_k1 = work_current;
     if (work_current < test_para.current_para.work_current_min || work_current > test_para.current_para.work_current_max)
     {
@@ -84,13 +57,9 @@ int32_t work_current_test(void)
     K1 = 0;
 
     K2 = 1;
-    //work_current = get_socket_current(20);
-    work_current = get_socket_current_one();
-    work_current2 = get_socket_current_one();
-    work_current3 = get_socket_current_one();
-    work_current4 = get_socket_current_one();
-    work_current5 = get_socket_current_one();
-    printf("work_current:%d, %d, %d, %d, %d\r\n", work_current, work_current2, work_current3, work_current4, work_current5);
+    work_current = get_socket_current(20);
+    if (test_para.debug_para.debug_info_en)
+        rc_printf("work_current_k2:%d\r\n", work_current);
     test_save.current_save.work_current_k2 = work_current;
     if (work_current < test_para.current_para.work_current_min || work_current > test_para.current_para.work_current_max)
     {
@@ -100,31 +69,9 @@ int32_t work_current_test(void)
     K2 = 0;
 
     K3 = 1;
-    //work_current = get_socket_current(20);
-    work_current = get_socket_current_one();
-    work_current2 = get_socket_current_one();
-    work_current3 = get_socket_current_one();
-    work_current4 = get_socket_current_one();
-    work_current5 = get_socket_current_one();
-    work_current6 = get_socket_current_one();
-    work_current7 = get_socket_current_one();
-    work_current8 = get_socket_current_one();
-    work_current9 = get_socket_current_one();
-    work_current10 = get_socket_current_one();
-    work_current11 = get_socket_current_one();
-    work_current12 = get_socket_current_one();
-    work_current13 = get_socket_current_one();
-    work_current14 = get_socket_current_one();
-    work_current15 = get_socket_current_one();
-    work_current16 = get_socket_current_one();
-    work_current17 = get_socket_current_one();
-    work_current18 = get_socket_current_one();
-    work_current19 = get_socket_current_one();
-    work_current20 = get_socket_current_one();
-    printf("work_current:%d, %d, %d, %d, %d\r\n", work_current, work_current2, work_current3, work_current4, work_current5);
-    printf("work_current:%d, %d, %d, %d, %d\r\n", work_current6, work_current7, work_current8, work_current9, work_current10);
-    printf("work_current:%d, %d, %d, %d, %d\r\n", work_current11, work_current12, work_current13, work_current14, work_current15);
-    printf("work_current:%d, %d, %d, %d, %d\r\n", work_current16, work_current17, work_current18, work_current19, work_current20);
+    work_current = get_socket_current(20);
+    if (test_para.debug_para.debug_info_en)
+        rc_printf("work_current_k3:%d\r\n", work_current);
     test_save.current_save.work_current_k3 = work_current;
     if (work_current < test_para.current_para.work_current_min || work_current > test_para.current_para.work_current_max)
     {
@@ -136,13 +83,9 @@ int32_t work_current_test(void)
     if (test_para.chip_para.chip_type == RC119_433 || test_para.chip_para.chip_type == RC119_315)
     {
         K4 = 1;
-        //work_current = get_socket_current(20);
-        work_current = get_socket_current_one();
-        work_current2 = get_socket_current_one();
-        work_current3 = get_socket_current_one();
-        work_current4 = get_socket_current_one();
-        work_current5 = get_socket_current_one();
-        printf("work_current:%d, %d, %d, %d, %d\r\n", work_current, work_current2, work_current3, work_current4, work_current5);
+        work_current = get_socket_current(20);
+        if (test_para.debug_para.debug_info_en)
+            rc_printf("work_current_k4:%d\r\n", work_current);
         test_save.current_save.work_current_k4 = work_current;
         if (work_current < test_para.current_para.work_current_min || work_current > test_para.current_para.work_current_max)
         {
@@ -152,13 +95,9 @@ int32_t work_current_test(void)
         K4 = 0;
 
         K5 = 1;
-        //work_current = get_socket_current(20);
-        work_current = get_socket_current_one();
-        work_current2 = get_socket_current_one();
-        work_current3 = get_socket_current_one();
-        work_current4 = get_socket_current_one();
-        work_current5 = get_socket_current_one();
-        printf("work_current:%d, %d, %d, %d, %d\r\n", work_current, work_current2, work_current3, work_current4, work_current5);
+        work_current = get_socket_current(20);
+        if (test_para.debug_para.debug_info_en)
+            rc_printf("work_current_k5:%d\r\n", work_current);
         test_save.current_save.work_current_k5 = work_current;
         if (work_current < test_para.current_para.work_current_min || work_current > test_para.current_para.work_current_max)
         {
@@ -168,13 +107,9 @@ int32_t work_current_test(void)
         K5 = 0;
 
         K6 = 1;
-        //work_current = get_socket_current(20);
-        work_current = get_socket_current_one();
-        work_current2 = get_socket_current_one();
-        work_current3 = get_socket_current_one();
-        work_current4 = get_socket_current_one();
-        work_current5 = get_socket_current_one();
-        printf("work_current:%d, %d, %d, %d, %d\r\n", work_current, work_current2, work_current3, work_current4, work_current5);
+        work_current = get_socket_current(20);
+        if (test_para.debug_para.debug_info_en)
+            rc_printf("work_current_k6:%d\r\n", work_current);
         test_save.current_save.work_current_k6 = work_current;
         if (work_current < test_para.current_para.work_current_min || work_current > test_para.current_para.work_current_max)
         {
@@ -184,13 +119,9 @@ int32_t work_current_test(void)
         K6 = 0;
 
         K7 = 1;
-        //work_current = get_socket_current(20);
-        work_current = get_socket_current_one();
-        work_current2 = get_socket_current_one();
-        work_current3 = get_socket_current_one();
-        work_current4 = get_socket_current_one();
-        work_current5 = get_socket_current_one();
-        printf("work_current:%d, %d, %d, %d, %d\r\n", work_current, work_current2, work_current3, work_current4, work_current5);
+        work_current = get_socket_current(20);
+        if (test_para.debug_para.debug_info_en)
+            rc_printf("work_current_k7:%d\r\n", work_current);
         test_save.current_save.work_current_k7 = work_current;
         if (work_current < test_para.current_para.work_current_min || work_current > test_para.current_para.work_current_max)
         {
@@ -200,13 +131,9 @@ int32_t work_current_test(void)
         K7 = 0;
 
         K8 = 1;
-        //work_current = get_socket_current(20);
-        work_current = get_socket_current_one();
-        work_current2 = get_socket_current_one();
-        work_current3 = get_socket_current_one();
-        work_current4 = get_socket_current_one();
-        work_current5 = get_socket_current_one();
-        printf("work_current:%d, %d, %d, %d, %d\r\n", work_current, work_current2, work_current3, work_current4, work_current5);
+        work_current = get_socket_current(20);
+        if (test_para.debug_para.debug_info_en)
+            rc_printf("work_current_k8:%d\r\n", work_current);
         test_save.current_save.work_current_k8 = work_current;
         if (work_current < test_para.current_para.work_current_min || work_current > test_para.current_para.work_current_max)
         {
@@ -216,13 +143,9 @@ int32_t work_current_test(void)
         K8 = 0;
 
         K9 = 1;
-        //work_current = get_socket_current(20);
-        work_current = get_socket_current_one();
-        work_current2 = get_socket_current_one();
-        work_current3 = get_socket_current_one();
-        work_current4 = get_socket_current_one();
-        work_current5 = get_socket_current_one();
-        printf("work_current:%d, %d, %d, %d, %d\r\n", work_current, work_current2, work_current3, work_current4, work_current5);
+        work_current = get_socket_current(20);
+        if (test_para.debug_para.debug_info_en)
+            rc_printf("work_current_k9:%d\r\n", work_current);
         test_save.current_save.work_current_k9 = work_current;
         if (work_current < test_para.current_para.work_current_min || work_current > test_para.current_para.work_current_max)
         {

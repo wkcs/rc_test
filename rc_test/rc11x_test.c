@@ -19,9 +19,9 @@ uint8_t rc11x_test_start(void)
     {
 
     }
-    if (test_para.test_en_para.horse_wide_test_en)
+    if (test_para.test_en_para.code_width_test_en)
     {
-        err = check_horse_wide();
+        err = check_code_width();
         if (err != 0)
         {
             bin = get_bin_from_err(err);
@@ -81,11 +81,14 @@ uint8_t rc11x_test_start(void)
     }
     if (test_para.test_en_para.sub_bin_test_en)
     {
-        bin = get_bin_from_freq();
-        if(bin == 0)
+        err = get_bin_from_freq(&bin);
+        if(err != 0)
         {
-            test_save.err_save = -NOT_FIND_BIN;
-            bin = get_bin_from_err(-NOT_FIND_BIN);
+            bin = get_bin_from_err(err);
+            test_save.err_save = err;
+            power_off(test_para.power_para.clos_time);
+            test_save.bin_save = bin;
+            return bin;
         }
         power_off(test_para.power_para.clos_time);
         test_save.bin_save = bin;
@@ -95,4 +98,96 @@ uint8_t rc11x_test_start(void)
     power_off(test_para.power_para.clos_time);
     test_save.bin_save = test_para.sub_bin_para.default_bin;
     return test_para.sub_bin_para.default_bin;
+}
+
+void send_test_results(void)
+{
+    uint8_t tx_buf[79];
+    tx_buf[0] = 1;
+    tx_buf[1] = 77;
+    /*chip_type_save*/
+    tx_buf[2] = test_save.chip_type_save.chip_type;
+    tx_buf[3] = test_save.chip_type_save.code_width_type;
+    /*freq_save*/
+    tx_buf[4] = (uint8_t)(test_save.freq_save.target_freq >> 24);
+    tx_buf[5] = (uint8_t)(test_save.freq_save.target_freq >> 16);
+    tx_buf[6] = (uint8_t)(test_save.freq_save.target_freq >> 8);
+    tx_buf[7] = (uint8_t)test_save.freq_save.target_freq;
+    tx_buf[8] = (uint8_t)(test_save.freq_save.freq_err >> 24);
+    tx_buf[9] = (uint8_t)(test_save.freq_save.freq_err >> 16);
+    tx_buf[10] = (uint8_t)(test_save.freq_save.freq_err >> 8);
+    tx_buf[11] = (uint8_t)test_save.freq_save.freq_err;
+    tx_buf[12] = (uint8_t)(test_save.freq_save.start_freq >> 24);
+    tx_buf[13] = (uint8_t)(test_save.freq_save.start_freq >> 16);
+    tx_buf[14] = (uint8_t)(test_save.freq_save.start_freq >> 8);
+    tx_buf[15] = (uint8_t)test_save.freq_save.start_freq;
+    tx_buf[16] = (uint8_t)(test_save.freq_save.end_freq >> 24);
+    tx_buf[17] = (uint8_t)(test_save.freq_save.end_freq >> 16);
+    tx_buf[18] = (uint8_t)(test_save.freq_save.end_freq >> 8);
+    tx_buf[19] = (uint8_t)test_save.freq_save.end_freq;
+    tx_buf[20] = (uint8_t)(test_save.freq_save.code >> 8);
+    tx_buf[21] = (uint8_t)test_save.freq_save.code;
+    /*err_save*/
+    tx_buf[22] = (uint8_t)(test_save.err_save >> 24);
+    tx_buf[23] = (uint8_t)(test_save.err_save >> 16);
+    tx_buf[24] = (uint8_t)(test_save.err_save >> 8);
+    tx_buf[25] = (uint8_t)test_save.err_save;
+    /*voltage_save*/
+    tx_buf[26] = (uint8_t)(test_save.voltage_save.default_voltage >> 8);
+    tx_buf[27] = (uint8_t)test_save.voltage_save.default_voltage;
+    tx_buf[28] = (uint8_t)(test_save.voltage_save.efuse_voltage >> 8);
+    tx_buf[29] = (uint8_t)test_save.voltage_save.efuse_voltage;
+    /*current_save*/
+    tx_buf[30] = (uint8_t)(test_save.current_save.standby_current >> 8);
+    tx_buf[31] = (uint8_t)test_save.current_save.standby_current;
+    tx_buf[32] = (uint8_t)(test_save.current_save.work_current_k0 >> 8);
+    tx_buf[33] = (uint8_t)test_save.current_save.work_current_k0;
+    tx_buf[34] = (uint8_t)(test_save.current_save.work_current_k1 >> 8);
+    tx_buf[35] = (uint8_t)test_save.current_save.work_current_k1;
+    tx_buf[36] = (uint8_t)(test_save.current_save.work_current_k2 >> 8);
+    tx_buf[37] = (uint8_t)test_save.current_save.work_current_k2;
+    tx_buf[38] = (uint8_t)(test_save.current_save.work_current_k3 >> 8);
+    tx_buf[39] = (uint8_t)test_save.current_save.work_current_k3;
+    tx_buf[40] = (uint8_t)(test_save.current_save.work_current_k4 >> 8);
+    tx_buf[41] = (uint8_t)test_save.current_save.work_current_k4;
+    tx_buf[42] = (uint8_t)(test_save.current_save.work_current_k5 >> 8);
+    tx_buf[43] = (uint8_t)test_save.current_save.work_current_k5;
+    tx_buf[44] = (uint8_t)(test_save.current_save.work_current_k6 >> 8);
+    tx_buf[45] = (uint8_t)test_save.current_save.work_current_k6;
+    tx_buf[46] = (uint8_t)(test_save.current_save.work_current_k7 >> 8);
+    tx_buf[47] = (uint8_t)test_save.current_save.work_current_k7;
+    tx_buf[48] = (uint8_t)(test_save.current_save.work_current_k8 >> 8);
+    tx_buf[49] = (uint8_t)test_save.current_save.work_current_k8;
+    tx_buf[50] = (uint8_t)(test_save.current_save.work_current_k9 >> 8);
+    tx_buf[51] = (uint8_t)test_save.current_save.work_current_k9;
+    /*os_save*/
+    tx_buf[52] = (uint8_t)(test_save.os_save.os_voltage_2 >> 8);
+    tx_buf[53] = (uint8_t)test_save.os_save.os_voltage_2;
+    tx_buf[54] = (uint8_t)(test_save.os_save.os_voltage_3 >> 8);
+    tx_buf[55] = (uint8_t)test_save.os_save.os_voltage_3;
+    tx_buf[56] = (uint8_t)(test_save.os_save.os_voltage_4 >> 8);
+    tx_buf[57] = (uint8_t)test_save.os_save.os_voltage_4;
+    tx_buf[58] = (uint8_t)(test_save.os_save.os_voltage_5 >> 8);
+    tx_buf[59] = (uint8_t)test_save.os_save.os_voltage_5;
+    tx_buf[60] = (uint8_t)(test_save.os_save.os_voltage_6 >> 8);
+    tx_buf[61] = (uint8_t)test_save.os_save.os_voltage_6;
+    tx_buf[62] = (uint8_t)(test_save.os_save.os_voltage_7 >> 8);
+    tx_buf[63] = (uint8_t)test_save.os_save.os_voltage_7;
+    tx_buf[64] = (uint8_t)(test_save.os_save.os_voltage_8 >> 8);
+    tx_buf[65] = (uint8_t)test_save.os_save.os_voltage_8;
+    tx_buf[66] = (uint8_t)(test_save.os_save.os_voltage_9 >> 8);
+    tx_buf[67] = (uint8_t)test_save.os_save.os_voltage_9;
+    tx_buf[68] = (uint8_t)(test_save.os_save.os_voltage_10 >> 8);
+    tx_buf[69] = (uint8_t)test_save.os_save.os_voltage_10;
+    tx_buf[70] = (uint8_t)(test_save.os_save.os_voltage_11 >> 8);
+    tx_buf[71] = (uint8_t)test_save.os_save.os_voltage_11;
+    tx_buf[72] = (uint8_t)(test_save.os_save.os_voltage_12 >> 8);
+    tx_buf[73] = (uint8_t)test_save.os_save.os_voltage_12;
+    tx_buf[74] = (uint8_t)(test_save.os_save.os_voltage_13 >> 8);
+    tx_buf[75] = (uint8_t)test_save.os_save.os_voltage_13;
+    tx_buf[76] = (uint8_t)(test_save.os_save.os_voltage_14 >> 8);
+    tx_buf[77] = (uint8_t)test_save.os_save.os_voltage_14;
+    /*bin_save*/
+    tx_buf[78] = (uint8_t)test_save.bin_save;
+    send_data_to_uart1(tx_buf, tx_buf[1] + 2);
 }

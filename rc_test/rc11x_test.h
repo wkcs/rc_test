@@ -8,6 +8,7 @@ extern "C" {
 #endif
 
 uint8_t rc11x_test_start(void);
+void send_test_results(void);
 
 #ifdef __cplusplus
 }

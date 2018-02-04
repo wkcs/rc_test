@@ -29,7 +29,7 @@ void test_para_restore(void)
     test_para.power_para.open_time = 2000;
     test_para.power_para.clos_time = 2000;
 
-    test_para.freq_test_para.target_freq = 307617;
+    test_para.freq_test_para.target_freq = 423750;
 
     test_para.cal_para.auto_cal_mode = 0;
     test_para.cal_para.freq_cal_test_num[0] = 100;
@@ -43,7 +43,7 @@ void test_para_restore(void)
     test_para.cal_para.freq_cal_test_num[8] = 1500;
     test_para.cal_para.freq_cal_test_num[9] = 10000;
     test_para.cal_para.start_cal_test_num = 2000;
-    test_para.cal_para.bin_cal_test_num = 10000;
+    test_para.cal_para.bin_cal_test_num = 20000;
 
     test_para.efuse_para.efuse_mode = 0;
     test_para.efuse_para.efuse_test_num = 10000;
@@ -61,12 +61,13 @@ void test_para_restore(void)
     for(i = 0; i < RC_ERR_NO_MAX; i++)
         test_para.sub_bin_para.err_bin[i] = 4;
     test_para.sub_bin_para.default_bin = 1;
+    test_para.sub_bin_para.sub_bin_cal_num = 3;
 
-    test_para.chip_para.chip_type = RC119_315;
-    test_para.chip_para.horse_wide_type = RC_315_1_2;
+    test_para.chip_para.chip_type = RC118_433;
+    test_para.chip_para.code_width_type = RC_433_1_2;
 
     test_para.test_en_para.os_test_en = ENABLE;
-    test_para.test_en_para.horse_wide_test_en = ENABLE;
+    test_para.test_en_para.code_width_test_en = ENABLE;
     test_para.test_en_para.standby_current_test_en = ENABLE;
     test_para.test_en_para.work_current_test_en = ENABLE;
     test_para.test_en_para.auto_cal_test_en = ENABLE;
@@ -76,9 +77,11 @@ void test_para_restore(void)
     test_para.voltage_para.default_voltage = 3300;
     test_para.voltage_para.efuse_voltage = 3600;
 
-    test_para.current_para.standby_current_max = 150;
+    test_para.current_para.standby_current_max = 5;
     test_para.current_para.work_current_max = 15000;
     test_para.current_para.work_current_min = 5000;
+
+    test_para.debug_para.debug_info_en = 1;
 
     W25QXX_Write((uint8_t *)(&test_para), 0, sizeof(test_para));
 }
@@ -97,7 +100,7 @@ void test_para_save(void)
 void test_save_init(void)
 {
     test_save.chip_type_save.chip_type = test_para.chip_para.chip_type;
-    test_save.chip_type_save.horse_wide_type = test_para.chip_para.horse_wide_type;
+    test_save.chip_type_save.code_width_type = test_para.chip_para.code_width_type;
 
     test_save.freq_save.code = 0;
     test_save.freq_save.target_freq = test_para.freq_test_para.target_freq;

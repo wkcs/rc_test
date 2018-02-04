@@ -1,7 +1,7 @@
 #include "test_check.h"
 #include "rc_math.h"
 
-int32_t check_horse_wide(void)
+int32_t check_code_width(void)
 {
     int32_t freq1, freq2;
     int8_t temp;
@@ -41,11 +41,11 @@ int32_t check_horse_wide(void)
     }
 
     temp = (int8_t)(freq1 * 10 / freq2 / 4);
-    if (RC_ABS(temp - test_para.chip_para.horse_wide_type * 10) < 5)
+    if (RC_ABS(temp - test_para.chip_para.code_width_type * 10) < 5)
     {
         return 0;
     }
     else
-        return -HORSE_WIDE_ERR;
+        return -CODE_WIDTH_ERR;
 }
 

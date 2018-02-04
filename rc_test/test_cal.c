@@ -84,7 +84,7 @@ int32_t auto_cal(uint8_t mode, uint16_t *data, int32_t start_freq)
 
 			if (RC_ABS(freq_err) > RC_ABS(freq_err_old))
 				(*data)--;
-
+			test_save.freq_save.end_freq = freq;
 			test_save.freq_save.code = *data;
             return 0;
 		}

@@ -153,11 +153,11 @@ int _write(int fd, char *ptr, int len)
 
     while (*ptr && (i < len))
     {
-        usart_send_blocking(USART1, *ptr);
+        usart_send_blocking(USART3, *ptr);
 
         if (*ptr == '\n')
         {
-            usart_send_blocking(USART1, '\r');
+            usart_send_blocking(USART3, '\r');
         }
 
         i++;
@@ -287,24 +287,27 @@ void USART1_IRQHandler(void) //串口1中断服务程序
 	if (USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
 	{
 		Res = USART_ReceiveData(USART1);
-		if (uart1_data.rx_len < 2) //检测是否接收完包头
+		if (uart1_data.rx_status == 0)
 		{
-			uart1_data.rx_buf[uart1_data.rx_len] = Res;
-			uart1_data.rx_len++;
-			if ((uart1_data.rx_len == 2) && (uart1_data.rx_buf[1] == 0))
-			{ //数据包长度为0时判断是否接收完成
-				uart1_data.rx_status = 1;
-			}
-		}
-		else if (uart1_data.rx_len < (uint32_t)(uart1_data.rx_buf[1] + 2)) //判断是否接收完一帧数据
-		{
-			uart1_data.rx_buf[uart1_data.rx_len] = Res;
-			uart1_data.rx_len++;
-			if (uart1_data.rx_len > 256)
-				uart1_data.rx_status = 0; //接收数据错误,重新开始接收
-			if (uart1_data.rx_len == (uint32_t)(uart1_data.rx_buf[1] + 2))
+			if (uart1_data.rx_len < 2) //检测是否接收完包头
 			{
-				uart1_data.rx_status = 1;
+				uart1_data.rx_buf[uart1_data.rx_len] = Res;
+				uart1_data.rx_len++;
+				if ((uart1_data.rx_len == 2) && (uart1_data.rx_buf[1] == 0))
+				{ //数据包长度为0时判断是否接收完成
+					uart1_data.rx_status = 1;
+				}
+			}
+			else if (uart1_data.rx_len < (uint32_t)(uart1_data.rx_buf[1] + 2)) //判断是否接收完一帧数据
+			{
+				uart1_data.rx_buf[uart1_data.rx_len] = Res;
+				uart1_data.rx_len++;
+				if (uart1_data.rx_len > 256)
+					uart1_data.rx_status = 0; //接收数据错误,重新开始接收
+				if (uart1_data.rx_len == (uint32_t)(uart1_data.rx_buf[1] + 2))
+				{
+					uart1_data.rx_status = 1;
+				}
 			}
 		}
 	}
@@ -357,5 +360,15 @@ void USART3_IRQHandler(void) //串口3中断服务程序
 			while (USART_GetFlagStatus(USART3, USART_FLAG_TC) != SET);	
 			USART_SendData(USART3, Res);
 		} */
+	}
+}
+
+void send_data_to_uart1(uint8_t *buf, uint8_t len)
+{
+	uint8_t i;
+	for (i = 0; i < len; i++)
+	{
+		while (USART_GetFlagStatus(USART1, USART_FLAG_TC) != SET);	
+		USART_SendData(USART1, buf[i]);
 	}
 }

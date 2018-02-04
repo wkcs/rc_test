@@ -8,7 +8,7 @@ extern "C" {
 #endif
 
 uint8_t get_bin_from_err(int32_t err);
-uint8_t get_bin_from_freq(void);
+int32_t get_bin_from_freq(uint8_t *bin);
 
 #ifdef __cplusplus
 }

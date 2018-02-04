@@ -171,7 +171,10 @@ void TIM2_CH3_Cap_Init(u32 arr, u16 psc)
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0; //抢占优先级3
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;		  //子优先级3
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			  //IRQ通道使能
-	NVIC_Init(&NVIC_InitStructure);		
+	NVIC_Init(&NVIC_InitStructure);	
+
+	TIM_DMACmd(TIM2,TIM_DMA_Update, ENABLE);              
+    TIM_DMACmd(TIM2,TIM_DMA_CC3, ENABLE);	
 	
 	TIM_Cmd(TIM2, DISABLE);					  //根据指定的参数初始化VIC寄存器、
 }

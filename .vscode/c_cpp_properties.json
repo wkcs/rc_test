@@ -61,7 +61,8 @@
                 "${workspaceRoot}/init",
                 "${workspaceRoot}/kernel",
                 "${workspaceRoot}/lib",
-                "${workspaceRoot}/rc_test"
+                "${workspaceRoot}/rc_test",
+                "${workspaceRoot}/cmd"
             ],
             "defines": [
                 "_DEBUG",

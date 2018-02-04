@@ -8,6 +8,10 @@
 extern "C" {
 #endif
 
+#define VERSION_1 1
+#define VERSION_2 0
+#define VERSION_3 1
+
 #define TYPE_NAME_CASE(x) case x: return (#x)
 
 enum __CHIP_TYPE{
@@ -33,14 +37,14 @@ inline const char *get_chip_type_name(uint8_t chip_type)
     return "unknown type";
 }
 
-enum __HORSE_WIDE_315_TYPE{
+enum __CODE_WIDTH_315_TYPE{
     RC_315_0_4 = 2,
     RC_315_0_6,
     RC_315_0_8,
     RC_315_1_0,
     RC_315_1_2,
     RC_315_1_4,
-    RC_315_1_7,
+    RC_315_1_6,
     RC_315_1_9,
     RC_315_2_1,
     RC_315_2_3,
@@ -52,9 +56,9 @@ enum __HORSE_WIDE_315_TYPE{
     RC_315_3_5,
 };
 
-inline const char *get_horse_wide_315_type_name(uint8_t horse_wide_type)
+inline const char *get_code_width_315_type_name(uint8_t code_width_type)
 {
-    switch (horse_wide_type)
+    switch (code_width_type)
     {
         TYPE_NAME_CASE(RC_315_0_4);
         TYPE_NAME_CASE(RC_315_0_6);
@@ -62,7 +66,7 @@ inline const char *get_horse_wide_315_type_name(uint8_t horse_wide_type)
         TYPE_NAME_CASE(RC_315_1_0);
         TYPE_NAME_CASE(RC_315_1_2);
         TYPE_NAME_CASE(RC_315_1_4);
-        TYPE_NAME_CASE(RC_315_1_7);
+        TYPE_NAME_CASE(RC_315_1_6);
         TYPE_NAME_CASE(RC_315_1_9);
         TYPE_NAME_CASE(RC_315_2_1);
         TYPE_NAME_CASE(RC_315_2_3);
@@ -76,7 +80,7 @@ inline const char *get_horse_wide_315_type_name(uint8_t horse_wide_type)
     return "unknown type";
 }
 
-enum __HORSE_WIDE_433_TYPE{
+enum __CODE_WIDTH_433_TYPE{
     RC_433_0_3 = 2,
     RC_433_0_5,
     RC_433_0_6,
@@ -86,7 +90,7 @@ enum __HORSE_WIDE_433_TYPE{
     RC_433_1_2,
     RC_433_1_4,
     RC_433_1_5,
-    RC_433_1_7,
+    RC_433_1_6,
     RC_433_1_8,
     RC_433_2_0,
     RC_433_2_1,
@@ -95,9 +99,9 @@ enum __HORSE_WIDE_433_TYPE{
     RC_433_2_7,
 };
 
-inline const char *get_horse_wide_433_type_name(uint8_t horse_wide_type)
+inline const char *get_code_width_433_type_name(uint8_t code_width_type)
 {
-    switch (horse_wide_type)
+    switch (code_width_type)
     {
         TYPE_NAME_CASE(RC_433_0_3);
         TYPE_NAME_CASE(RC_433_0_5);
@@ -108,7 +112,7 @@ inline const char *get_horse_wide_433_type_name(uint8_t horse_wide_type)
         TYPE_NAME_CASE(RC_433_1_2);
         TYPE_NAME_CASE(RC_433_1_4);
         TYPE_NAME_CASE(RC_433_1_5);
-        TYPE_NAME_CASE(RC_433_1_7);
+        TYPE_NAME_CASE(RC_433_1_6);
         TYPE_NAME_CASE(RC_433_1_8);
         TYPE_NAME_CASE(RC_433_2_0);
         TYPE_NAME_CASE(RC_433_2_1);
@@ -158,18 +162,19 @@ typedef struct __sub_bin_para
     uint8_t err_bin[RC_ERR_NO_MAX];
     int32_t bin_freq_err_max[8];
     uint8_t default_bin;
+    uint8_t sub_bin_cal_num;
 } sub_bin_para_t;
 
 typedef struct __chip_para
 {
     uint8_t chip_type;
-    uint8_t horse_wide_type;
+    uint8_t code_width_type;
 } chip_para_t;
 
 typedef struct __test_en_para
 {
     uint8_t os_test_en;
-    uint8_t horse_wide_test_en;
+    uint8_t code_width_test_en;
     uint8_t standby_current_test_en;
     uint8_t work_current_test_en;
     uint8_t auto_cal_test_en;
@@ -190,6 +195,11 @@ typedef struct __current_para
     uint16_t work_current_min;
 }current_para_t;
 
+typedef struct __debug_para
+{
+    uint8_t debug_info_en;
+}debug_para_t;
+
 typedef struct __test_para
 {
     uint32_t test_para_head;
@@ -203,6 +213,7 @@ typedef struct __test_para
     test_en_para_t test_en_para;
     voltage_para_t voltage_para;
     current_para_t current_para;
+    debug_para_t debug_para;
 } test_para_t;
 
 typedef struct __freq_data
@@ -234,7 +245,7 @@ typedef struct __test_data
 
 typedef struct __chip_type_save{
     uint8_t chip_type;
-    uint8_t horse_wide_type;
+    uint8_t code_width_type;
 }chip_type_save_t;
 
 typedef struct __freq_save{
