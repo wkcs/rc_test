@@ -1,1 +1,1 @@
-C_SRCS += $(wildcard $(TOP_DIR)/cmsis/st_lib/src/*.c)
+STM32_LIB_SRCS = $(wildcard $(TOP_DIR)/src/*.c)

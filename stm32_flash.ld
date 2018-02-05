@@ -180,6 +180,7 @@ SECTIONS
     libc.a ( * )
     libm.a ( * )
     libgcc.a ( * )
+    stm32_lib.a ( * )
   }
 
   .ARM.attributes 0 : { *(.ARM.attributes) }

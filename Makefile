@@ -1,43 +1,14 @@
 #工程的名称及最后生成文件的名字
 TARGET = rc11x_test
 
-RM := rm -rf
-
-#打开显示选项
-ifneq ($(V),1)
-Q		    := @
-endif
-
-#优化等级
-ifeq ($(OPT),0)
-OPTSRC = -O0
-else ifeq ($(OPT),1)
-OPTSRC = -O1
-else ifeq ($(OPT),2)
-OPTSRC = -O2
-else ifeq ($(OPT),3)
-OPTSRC = -O3
-else ifeq ($(OPT),s)
-OPTSRC = -Os
-else 
-OPTSRC = -Og
-endif
-
-
-#定义工具链
-PREFIX		:= arm-none-eabi
-CC		    := $(PREFIX)-gcc
-CXX		    := $(PREFIX)-g++
-LD		    := $(PREFIX)-gcc
-AR		    := $(PREFIX)-ar
-AS		    := $(PREFIX)-as
-OBJCOPY		:= $(PREFIX)-objcopy
-OBJDUMP		:= $(PREFIX)-objdump
-SIZE        := $(PREFIX)-size
-GDB		    := $(PREFIX)-gdb
-
 #读取当前工作目录
 TOP_DIR = .
+
+include config.mk
+
+LIB_MAKE_DIR += $(TOP_DIR)/cmsis/st_lib
+
+LIBS += $(TOP_DIR)/cmsis/st_lib
 
 # 宏定义
 #DEFS		= -D ARM_MATH_CM4=1U -D STM32F407xx -D USE_HAL_DRIVER -D __MPU_PRESENT=1U
@@ -45,12 +16,6 @@ DEFS		= -D STM32F40_41xxx -D USE_STDPERIPH_DRIVER -D __VFP_FP__
 
 #链接脚本
 LDSCRIPT    = $(TOP_DIR)/stm32_flash.ld
-
-# 架构相关编译指令
-#使用硬件fpu
-FP_FLAGS	= -mfloat-abi=hard -mfpu=fpv4-sp-d16
-#FP_FLAGS	= -msoft-float
-ARCH_FLAGS	= -mthumb -mcpu=cortex-m4
 
 # OpenOCD specific variables
 OOCD		:= openocd
@@ -86,41 +51,23 @@ INC_DIR = -I $(TOP_DIR)/board/v3          \
 #DEBUG_DIRS = $(TOP_DIR)/debug
 #DEBUG_DIRS += $(SOURCE_DIRS:./%=$(TOP_DIR)/debug/%)
 
-CCFLAGS = $(ARCH_FLAGS)
-CCFLAGS += $(FP_FLAGS)
-CCFLAGS += $(OPTSRC)
-CCFLAGS += -fmessage-length=0 -fsigned-char -ffunction-sections                  \
-           -fdata-sections -ffreestanding -fno-move-loop-invariants
-CCFLAGS += -Wall -Wextra  -g3
+
 CCFLAGS += $(INC_DIR)
 CCFLAGS += $(DEFS)
-CCFLAGS += -std=gnu11 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -c
 
 
-ASFLAGS = $(ARCH_FLAGS)
-ASFLAGS += $(FP_FLAGS)
-ASFLAGS += $(OPTSRC)
-ASFLAGS += -fmessage-length=0 -fsigned-char -ffunction-sections                  \
-           -fdata-sections -ffreestanding -fno-move-loop-invariants
-ASFLAGS += -Wall -Wextra  -g3 -x assembler-with-cpp
+
 ASFLAGS += $(INC_DIR)
 ASFLAGS += $(DEFS)
-ASFLAGS += -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -c
 
 
-LDFLAGS = $(ARCH_FLAGS)
-LDFLAGS += $(FP_FLAGS)
-LDFLAGS += -specs=nano.specs -specs=nosys.specs -static
-LDFLAGS += -Wl,--start-group -lc -lm -Wl,--end-group -Wl,-cref,-u,Reset_Handler -Wl,-Map=$(TARGET).map -Wl,--gc-sections \
-           -Wl,--defsym=malloc_getpagesize_P=0x80
 LDFLAGS += -T $(LDSCRIPT)
-
+LDFLAGS += $(LIBS:%=-L %)
 
 # 展开工作 子目录中的inc文件（inc文件中添加需要编译链接的.c，.s等文件）
 -include $(TOP_DIR)/board/v3/make.inc
 -include $(TOP_DIR)/cmsis/core/make.inc
 -include $(TOP_DIR)/cmsis/sys/make.inc
--include $(TOP_DIR)/cmsis/st_lib/make.inc
 -include $(TOP_DIR)/com/make.inc
 -include $(TOP_DIR)/drivers/make.inc
 #-include $(TOP_DIR)/hal/make.inc
@@ -164,7 +111,7 @@ $(TARGET).images: $(TARGET).bin $(TARGET).hex $(TARGET).list
 	$(Q)echo   images generated
 
 
-$(TARGET).elf: $(OBJS) $(LDSCRIPT)
+$(TARGET).elf: $(OBJS) $(LDSCRIPT) libs
 	@echo   LD      $(TARGET).elf
 	$(Q)$(CC) $(LDFLAGS) -o "$(TARGET).elf" $(C_OBJS) $(ASM_OBJS)
 	@echo   SIZE    $(TARGET).elf\n\n
@@ -194,6 +141,8 @@ $(ASM_OBJS):$(TOP_DIR)/debug/%.o:$(TOP_DIR)/%.S
 	@echo   AS      $<
 	$(Q)$(CC) $(ASFLAGS) -o $@ $<
 
+libs:
+	$(MAKE) -C $(LIB_MAKE_DIR) $@
 #debug_file:
 #	mkdir $(DEBUG_DIRS)
 
@@ -218,3 +167,4 @@ debug: $(TARGET).elf
 clean:
 	@echo   CLEAN
 	$(Q)-$(RM) $(DEPS) $(OBJS) $(TARGET).elf $(TARGET).map $(TARGET).list $(TARGET).bin $(TARGET).hex
+	$(MAKE) -C $(TOP_DIR)/cmsis/st_lib $@
