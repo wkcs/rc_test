@@ -5,7 +5,6 @@ int32_t check_code_width(void)
 {
     int32_t freq1, freq2;
     int8_t temp;
-
     if (test_data.power_data.status == POWER_OFF)
     {
         power_on(test_para.power_para.open_time);
@@ -39,13 +38,33 @@ int32_t check_code_width(void)
         if (freq2 <= 0)
             return freq2;
     }
-
     temp = (int8_t)(freq1 * 10 / freq2 / 4);
     if (RC_ABS(temp - test_para.chip_para.code_width_type * 10) < 5)
     {
+        if (test_para.debug_para.debug_info_en){
+            if (temp % 10 < 5)
+                temp = temp / 10;
+            else
+                temp = temp / 10 + 1;
+            if (test_para.chip_para.chip_type < 3)
+                rc_printf("code_width_type:%s\r\n", get_code_width_433_type_name(temp));
+            else
+                rc_printf("code_width_type:%s\r\n", get_code_width_315_type_name(temp));
+        }
         return 0;
     }
-    else
+    else {
+        if (test_para.debug_para.debug_info_en) {
+            if (temp % 10 < 5)
+                temp = temp / 10;
+            else
+                temp = temp / 10 + 1;
+            if (test_para.chip_para.chip_type < 3)
+                rc_printf("code_width_type:%s\r\n", get_code_width_433_type_name(temp));
+            else
+                rc_printf("code_width_type:%s\r\n", get_code_width_315_type_name(temp));
+        }
         return -CODE_WIDTH_ERR;
+    }
 }
 

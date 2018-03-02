@@ -6,7 +6,6 @@
 #include "test_machine_com.h"
 #include "test_type.h"
 #include "test_current.h"
-#include "test_os.h"
 #include "rc_err.h"
 
 uint8_t rc11x_test_start(void)
@@ -21,6 +20,8 @@ uint8_t rc11x_test_start(void)
         err = os_test();
         if (err != 0)
         {
+            if (test_para.debug_para.debug_info_en)
+				rc_printf("error by \"os_test\"\r\n");
             bin = get_bin_from_err(err);
             test_save.err_save = err;
             power_off(test_para.power_para.clos_time);
@@ -33,6 +34,8 @@ uint8_t rc11x_test_start(void)
         err = check_code_width();
         if (err != 0)
         {
+            if (test_para.debug_para.debug_info_en)
+				rc_printf("error by \"check_code_width\"\r\n");
             bin = get_bin_from_err(err);
             test_save.err_save = err;
             power_off(test_para.power_para.clos_time);
@@ -45,6 +48,8 @@ uint8_t rc11x_test_start(void)
         err = standby_current_test();
         if (err != 0)
         {
+            if (test_para.debug_para.debug_info_en)
+				rc_printf("error by \"standby_current_test\"\r\n");
             bin = get_bin_from_err(err);
             test_save.err_save = err;
             power_off(test_para.power_para.clos_time);
@@ -57,6 +62,8 @@ uint8_t rc11x_test_start(void)
         err = work_current_test();
         if (err != 0)
         {
+            if (test_para.debug_para.debug_info_en)
+				rc_printf("error by \"work_current_test\"\r\n");
             bin = get_bin_from_err(err);
             test_save.err_save = err;
             power_off(test_para.power_para.clos_time);
@@ -69,6 +76,8 @@ uint8_t rc11x_test_start(void)
         err = auto_cal(test_para.cal_para.auto_cal_mode, &data, test_save.freq_save.start_freq);
         if (err != 0)
         {
+            if (test_para.debug_para.debug_info_en)
+				rc_printf("error by \"auto_cal\"\r\n");
             bin = get_bin_from_err(err);
             test_save.err_save = err;
             power_off(test_para.power_para.clos_time);
@@ -81,6 +90,8 @@ uint8_t rc11x_test_start(void)
         err = efuse_chip(test_para.efuse_para.efuse_mode, data, 0);
         if (err != 0)
         {
+            if (test_para.debug_para.debug_info_en)
+				rc_printf("error by \"efuse_chip\"\r\n");
             bin = get_bin_from_err(err);
             test_save.err_save = err;
             power_off(test_para.power_para.clos_time);
@@ -93,6 +104,8 @@ uint8_t rc11x_test_start(void)
         err = get_bin_from_freq(&bin);
         if(err != 0)
         {
+            if (test_para.debug_para.debug_info_en)
+				rc_printf("error by \"get_bin_from_freq\"\r\n");
             bin = get_bin_from_err(err);
             test_save.err_save = err;
             power_off(test_para.power_para.clos_time);

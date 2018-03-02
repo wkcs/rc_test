@@ -21,15 +21,20 @@ int32_t get_bin_from_freq(uint8_t *bin)
     if (test_data.test_mod != NORMAL_MODE)
         exit_test();
 
+    /*先进入测试模式*/
+    start_sig();
+    cal_sig(0);
+
     for (i = 0; i < test_para.sub_bin_para.sub_bin_cal_num; i++) {
-		freq = cal_one(0, 0, test_para.cal_para.bin_cal_test_num);
+        freq = get_freq(test_para.cal_para.bin_cal_test_num);
 		if(freq > 0) {
 			test_save.freq_save.end_freq = freq / (i + 1) + test_save.freq_save.end_freq * i / (i + 1);
 		} 
         else
 			return freq;
 	}
-
+    exit_test();
+    
     test_save.freq_save.freq_err =test_save.freq_save.end_freq - test_save.freq_save.target_freq;
 
     for (i = 0; i < 8; i++)
