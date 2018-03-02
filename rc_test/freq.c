@@ -17,14 +17,14 @@ int32_t get_freq(uint16_t test_num)
 	test_data.freq_data.need_num = test_num;
 	if (test_data.freq_data.need_num > 10000)
 		return -NO_FREQ;
-	TIM_SetCounter(TIM2, 0);
+	TIM_SetCounter(TIM4, 0);
 	DMA1_Stream3->NDTR = test_data.freq_data.need_num + 2;
 	DMA_Cmd(DMA1_Stream3, ENABLE);
 	DMA_ClearFlag(DMA1_Stream3,DMA_FLAG_TCIF3);  //防止因为没有频率时造成的DMA误以为已经传输完成，导致输出错误
-	TIM_Cmd(TIM2, ENABLE);
+	TIM_Cmd(TIM4, ENABLE);
 	while((DMA_GetFlagStatus(DMA1_Stream3,DMA_FLAG_TCIF3) == RESET) && (test_data.freq_data.timer_updata_num < 255));//等待DMA1_Stream3传输完成
 	DMA_ClearFlag(DMA1_Stream3,DMA_FLAG_TCIF3);//清除DMA1_Stream3传输完成标志
-	TIM_Cmd(TIM2, DISABLE);
+	TIM_Cmd(TIM4, DISABLE);
 	DMA_Cmd(DMA1_Stream3, DISABLE);
 	if (test_data.freq_data.timer_updata_num < 255) {         //检验是否溢出
 		temp = test_data.freq_data.timer_updata_num * 65536;

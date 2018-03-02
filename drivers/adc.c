@@ -61,10 +61,10 @@ void adc1_init(void)
 
 	ADC_DMARequestAfterLastTransferCmd(ADC1, ENABLE);
 	ADC_DMACmd(ADC1, ENABLE);
-	ADC_Cmd(ADC1, ENABLE); //开启AD转换器
+	//ADC_Cmd(ADC1, ENABLE); //开启AD转换器
 
 	/*配置DMA*/
-	DMA_config(DMA2_Stream0, DMA_Channel_0, &ADC1->DR, adc1_buf, 36);
+	DMA_config(DMA2_Stream0, DMA_Channel_0, (uint32_t)&ADC1->DR, (uint32_t)adc1_buf, 36);
 }
 
 void adc2_init(void)
@@ -84,11 +84,11 @@ void adc2_init(void)
 	RCC_APB2PeriphResetCmd(RCC_APB2Periph_ADC2, ENABLE);  //ADC2复位
 	RCC_APB2PeriphResetCmd(RCC_APB2Periph_ADC2, DISABLE); //复位结束
 
-	ADC_CommonInitStructure.ADC_Mode = ADC_Mode_Independent;                     //独立模式
+	/*ADC_CommonInitStructure.ADC_Mode = ADC_Mode_Independent;                     //独立模式
 	ADC_CommonInitStructure.ADC_TwoSamplingDelay = ADC_TwoSamplingDelay_5Cycles; //两个采样阶段之间的延迟5个时钟
 	ADC_CommonInitStructure.ADC_DMAAccessMode = ADC_DMAAccessMode_1;             //DMA模式一
 	ADC_CommonInitStructure.ADC_Prescaler = ADC_Prescaler_Div4;                  //预分频4分频。ADCCLK=PCLK2/4=84/4=21Mhz,ADC时钟最好不要超过36Mhz
-	ADC_CommonInit(&ADC_CommonInitStructure);                                    //初始化
+	ADC_CommonInit(&ADC_CommonInitStructure);*/                                    //初始化
 
 	ADC_InitStructure.ADC_Resolution = ADC_Resolution_12b;                      //12位模式
 	ADC_InitStructure.ADC_ScanConvMode = ENABLE;                                //扫描模式
@@ -100,17 +100,16 @@ void adc2_init(void)
 
 	ADC_DMARequestAfterLastTransferCmd(ADC2, ENABLE);
 	ADC_DMACmd(ADC2, ENABLE);
-	ADC_Cmd(ADC2, ENABLE); //开启AD转换器
+	//ADC_Cmd(ADC2, ENABLE); //开启AD转换器
 
 	/*配置DMA*/
-	DMA_config(DMA2_Stream2, DMA_Channel_1, &ADC2->DR, adc2_buf, 1000);
+	DMA_config(DMA2_Stream2, DMA_Channel_1, (uint32_t)&ADC2->DR, (uint32_t)adc2_buf, 1000);
 }
 
 
 uint16_t *get_os_adc(void)
 {
 	uint32_t i = 0;
-	ADC_Cmd(ADC1, DISABLE);         //先失能ADC，这样保证从第一个规则组开始转换
 	DMA2_Stream0->NDTR = 36;
     DMA_Cmd(DMA2_Stream0, ENABLE);
 	DMA_ClearFlag(DMA2_Stream0, DMA_FLAG_TCIF0);
@@ -127,6 +126,7 @@ uint16_t *get_os_adc(void)
 		DMA_Cmd(DMA2_Stream0, DISABLE);
 		return 0;
 	}
+	ADC_Cmd(ADC1, DISABLE);             /*用完以后关闭ADC，防止两个ADC之间的干扰*/
 	DMA_ClearFlag(DMA2_Stream0, DMA_FLAG_TCIF0);
 	DMA_Cmd(DMA2_Stream0, DISABLE);
 	return adc1_buf;
@@ -135,7 +135,6 @@ uint16_t *get_os_adc(void)
 uint16_t *get_work_current_adc(uint16_t num)
 {
 	uint32_t i = 0;
-	ADC_Cmd(ADC2, DISABLE);         //先失能ADC，这样保证从第一个规则组开始转换
 	DMA2_Stream2->NDTR = num;
     DMA_Cmd(DMA2_Stream2, ENABLE);
 	DMA_ClearFlag(DMA2_Stream2, DMA_FLAG_TCIF2);
@@ -153,15 +152,16 @@ uint16_t *get_work_current_adc(uint16_t num)
 		DMA_Cmd(DMA2_Stream2, DISABLE);
 		return 0;
 	}
+	ADC_Cmd(ADC2, DISABLE);             /*用完以后关闭ADC，防止两个ADC之间的干扰*/
 	DMA_ClearFlag(DMA2_Stream2, DMA_FLAG_TCIF2);
-	DMA_Cmd(DMA2_Stream2, DISABLE);
+	DMA_Cmd(DMA2_Stream2, DISABLE);          
 	return adc2_buf;
 }
 
 uint16_t *get_standby_current_adc(uint16_t num)
 {
 	uint32_t i = 0;
-	ADC_Cmd(ADC2, DISABLE);         //先失能ADC，这样保证从第一个规则组开始转换
+	//ADC_Cmd(ADC2, DISABLE);         //先失能ADC，这样保证从第一个规则组开始转换
 	DMA2_Stream2->NDTR = num;
     DMA_Cmd(DMA2_Stream2, ENABLE);
 	DMA_ClearFlag(DMA2_Stream2, DMA_FLAG_TCIF2);
@@ -179,6 +179,7 @@ uint16_t *get_standby_current_adc(uint16_t num)
 		DMA_Cmd(DMA2_Stream2, DISABLE);
 		return 0;
 	}
+	ADC_Cmd(ADC2, DISABLE);        /*用完以后关闭ADC，防止两个ADC之间的干扰*/
 	DMA_ClearFlag(DMA2_Stream2, DMA_FLAG_TCIF2);
 	DMA_Cmd(DMA2_Stream2, DISABLE);
 	return adc2_buf;

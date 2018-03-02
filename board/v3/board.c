@@ -11,7 +11,7 @@ void rc11x_test_v3_board_init(void)
     adc2_init();
     dac1_init();
     W25QXX_Init();
-    xm9816_init();
+    //xm9816_init();
     power_init();
     //test_mach_init();
     //test_signal_init();

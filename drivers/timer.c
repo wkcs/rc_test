@@ -104,9 +104,9 @@ void TIM4_Init(u16 arr, u16 psc)
 //定时器4中断服务函数
 void TIM4_IRQHandler(void)
 {
-	if (TIM_GetITStatus(TIM11, TIM_IT_Update) != RESET)
+	if (TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET)
 		test_data.freq_data.timer_updata_num++;
-	TIM_ClearITPendingBit(TIM11, TIM_IT_Update);
+	TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
 }
 
 //通用定时器5中断初始化
