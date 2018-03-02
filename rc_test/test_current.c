@@ -4,19 +4,56 @@
 #include "test_signal.h"
 #include "rc_debug.h"
 
+#define SC_TEST_NUM 1000        /*待机电流采样次数*/
+#define WC_TEST_NUM 1000        /*工作电流采样次数*/
+
+int32_t get_standby_current(void)
+{
+    uint16_t i, *buf, temp;
+    uint32_t adc_sum = 0;      /*ADC采样结果的总和*/
+    buf = get_standby_current_adc(SC_TEST_NUM);
+    if (buf == 0)
+        return -STANDBY_CURRENT_ADC_ERR;
+    for (i = 0; i < SC_TEST_NUM; i++) {
+        adc_sum += buf[i];
+    }
+    temp = (uint16_t)((float)adc_sum * 0.081348 / SC_TEST_NUM);    /*0.081348 = 3332 / 4096 / 10, 结果为uA*/
+    return (int32_t)temp;
+}
+
+int32_t get_work_current(void)
+{
+    uint16_t i, *buf, temp;
+    uint32_t adc_sum = 0;      /*ADC采样结果的总和*/
+    buf = get_work_current_adc(WC_TEST_NUM);
+    if (buf == 0)
+        return -WORK_CURRENT_ADC_ERR;
+    for (i = 0; i < WC_TEST_NUM; i++) {
+        adc_sum += buf[i];
+    }
+    temp = (uint16_t)((float)adc_sum * 0.813477 / WC_TEST_NUM);    /*0.081348 = 3332 / 4096, 结果为uA*/
+    return (int32_t)temp;
+}
+
 int32_t standby_current_test(void)
 {
+    int32_t err;
     uint16_t standby_current;
+    /*检查芯片供电是否打开*/
     if (test_data.power_data.status == POWER_OFF)
     {
         power_on(test_para.power_para.open_time);
     }
+    /*检查芯片是否处于测试模式，如果在测试模式则需要退出*/
     if (test_data.test_mod != NORMAL_MODE)
         exit_test();
-    standby_current = get_socket_current(100);
+    err = get_standby_current();
+    if (err < 0)
+        return err;
+    standby_current = (uint16_t)err;
     test_save.current_save.standby_current = standby_current;
     if (test_para.debug_para.debug_info_en)
-        rc_printf("standby_current:%d\r\n", standby_current);
+        rc_printf("standby_current:%d uA\r\n", standby_current);
     if (standby_current > test_para.current_para.standby_current_max)
         return -STANDBY_CURRENT_ERR;
     return 0;
@@ -24,18 +61,28 @@ int32_t standby_current_test(void)
 
 int32_t work_current_test(void)
 {
+    int32_t err;
     uint16_t work_current;
+    /*检查芯片供电是否打开*/
     if (test_data.power_data.status == POWER_OFF)
     {
         power_on(test_para.power_para.open_time);
     }
+    /*检查芯片是否处于测试模式，如果在测试模式则需要退出*/
     if (test_data.test_mod != NORMAL_MODE)
         exit_test();
 
+    /*
+     * 检查每个按键按下后的工作电流，
+     * 
+     */
     K0 = 1;
-    work_current = get_socket_current(20);
+    err = get_work_current();
+    if (err < 0)
+        return err;
+    work_current = (uint16_t)err;
     if (test_para.debug_para.debug_info_en)
-        rc_printf("work_current_k0:%d\r\n", work_current);
+        rc_printf("work_current_k0:%d uA\r\n", work_current);
     test_save.current_save.work_current_k0 = work_current;
     if (work_current < test_para.current_para.work_current_min || work_current > test_para.current_para.work_current_max)
     {
@@ -45,9 +92,12 @@ int32_t work_current_test(void)
     K0 = 0;
 
     K1 = 1;
-    work_current = get_socket_current(20);
+    err = get_work_current();
+    if (err < 0)
+        return err;
+    work_current = (uint16_t)err;
     if (test_para.debug_para.debug_info_en)
-        rc_printf("work_current_k1:%d\r\n", work_current);
+        rc_printf("work_current_k1:%d uA\r\n", work_current);
     test_save.current_save.work_current_k1 = work_current;
     if (work_current < test_para.current_para.work_current_min || work_current > test_para.current_para.work_current_max)
     {
@@ -57,9 +107,12 @@ int32_t work_current_test(void)
     K1 = 0;
 
     K2 = 1;
-    work_current = get_socket_current(20);
+    err = get_work_current();
+    if (err < 0)
+        return err;
+    work_current = (uint16_t)err;
     if (test_para.debug_para.debug_info_en)
-        rc_printf("work_current_k2:%d\r\n", work_current);
+        rc_printf("work_current_k2:%d uA\r\n", work_current);
     test_save.current_save.work_current_k2 = work_current;
     if (work_current < test_para.current_para.work_current_min || work_current > test_para.current_para.work_current_max)
     {
@@ -69,9 +122,12 @@ int32_t work_current_test(void)
     K2 = 0;
 
     K3 = 1;
-    work_current = get_socket_current(20);
+    err = get_work_current();
+    if (err < 0)
+        return err;
+    work_current = (uint16_t)err;
     if (test_para.debug_para.debug_info_en)
-        rc_printf("work_current_k3:%d\r\n", work_current);
+        rc_printf("work_current_k3:%d uA\r\n", work_current);
     test_save.current_save.work_current_k3 = work_current;
     if (work_current < test_para.current_para.work_current_min || work_current > test_para.current_para.work_current_max)
     {
@@ -83,9 +139,12 @@ int32_t work_current_test(void)
     if (test_para.chip_para.chip_type == RC119_433 || test_para.chip_para.chip_type == RC119_315)
     {
         K4 = 1;
-        work_current = get_socket_current(20);
+        err = get_work_current();
+        if (err < 0)
+            return err;
+        work_current = (uint16_t)err;
         if (test_para.debug_para.debug_info_en)
-            rc_printf("work_current_k4:%d\r\n", work_current);
+            rc_printf("work_current_k4:%d uA\r\n", work_current);
         test_save.current_save.work_current_k4 = work_current;
         if (work_current < test_para.current_para.work_current_min || work_current > test_para.current_para.work_current_max)
         {
@@ -95,9 +154,12 @@ int32_t work_current_test(void)
         K4 = 0;
 
         K5 = 1;
-        work_current = get_socket_current(20);
+        err = get_work_current();
+        if (err < 0)
+            return err;
+        work_current = (uint16_t)err;
         if (test_para.debug_para.debug_info_en)
-            rc_printf("work_current_k5:%d\r\n", work_current);
+            rc_printf("work_current_k5:%d uA\r\n", work_current);
         test_save.current_save.work_current_k5 = work_current;
         if (work_current < test_para.current_para.work_current_min || work_current > test_para.current_para.work_current_max)
         {
@@ -107,9 +169,12 @@ int32_t work_current_test(void)
         K5 = 0;
 
         K6 = 1;
-        work_current = get_socket_current(20);
+        err = get_work_current();
+        if (err < 0)
+            return err;
+        work_current = (uint16_t)err;
         if (test_para.debug_para.debug_info_en)
-            rc_printf("work_current_k6:%d\r\n", work_current);
+            rc_printf("work_current_k6:%d uA\r\n", work_current);
         test_save.current_save.work_current_k6 = work_current;
         if (work_current < test_para.current_para.work_current_min || work_current > test_para.current_para.work_current_max)
         {
@@ -119,9 +184,12 @@ int32_t work_current_test(void)
         K6 = 0;
 
         K7 = 1;
-        work_current = get_socket_current(20);
+        err = get_work_current();
+        if (err < 0)
+            return err;
+        work_current = (uint16_t)err;
         if (test_para.debug_para.debug_info_en)
-            rc_printf("work_current_k7:%d\r\n", work_current);
+            rc_printf("work_current_k7:%d uA\r\n", work_current);
         test_save.current_save.work_current_k7 = work_current;
         if (work_current < test_para.current_para.work_current_min || work_current > test_para.current_para.work_current_max)
         {
@@ -131,9 +199,12 @@ int32_t work_current_test(void)
         K7 = 0;
 
         K8 = 1;
-        work_current = get_socket_current(20);
+        err = get_work_current();
+        if (err < 0)
+            return err;
+        work_current = (uint16_t)err;
         if (test_para.debug_para.debug_info_en)
-            rc_printf("work_current_k8:%d\r\n", work_current);
+            rc_printf("work_current_k8:%d uA\r\n", work_current);
         test_save.current_save.work_current_k8 = work_current;
         if (work_current < test_para.current_para.work_current_min || work_current > test_para.current_para.work_current_max)
         {
@@ -143,9 +214,12 @@ int32_t work_current_test(void)
         K8 = 0;
 
         K9 = 1;
-        work_current = get_socket_current(20);
+        err = get_work_current();
+        if (err < 0)
+            return err;
+        work_current = (uint16_t)err;
         if (test_para.debug_para.debug_info_en)
-            rc_printf("work_current_k9:%d\r\n", work_current);
+            rc_printf("work_current_k9:%d uA\r\n", work_current);
         test_save.current_save.work_current_k9 = work_current;
         if (work_current < test_para.current_para.work_current_min || work_current > test_para.current_para.work_current_max)
         {

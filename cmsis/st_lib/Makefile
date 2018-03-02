@@ -32,6 +32,8 @@ $(C_OBJS): $(TOP_DIR)/../../debug/cmsis/st_lib/%.o:$(TOP_DIR)/%.c
 	@echo   CC      $<
 	$(Q)$(CC) $(CCFLAGS) -o $@ $<
 
+-include $(DEPS)
+
 .PHONY: libs clean all
 
 clean:

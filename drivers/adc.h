@@ -3,13 +3,20 @@
 
 #include "sys.h"
 
-void adc_init(void);
-u16 get_adc(u8 ch);
-u16 get_adc_average(u8 ch, u8 times);
-uint16_t get_socket_voltage(uint8_t num);
-uint16_t get_socket_voltage_one(void);
-uint16_t get_socket_current(uint8_t num);
-uint16_t get_socket_current_one(void);
+#ifdef __cplusplus
+extern "C" {
+#endif 
+
+void adc1_init(void);
+void adc2_init(void);
+uint16_t *get_os_adc(void);
+uint16_t *get_work_current_adc(uint16_t num);
+uint16_t *get_standby_current_adc(uint16_t num);
+uint16_t *get_rc_power_adc(uint16_t num);
+
+#ifdef __cplusplus
+}
+#endif 
 
 #endif
 

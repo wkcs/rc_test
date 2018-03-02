@@ -12,6 +12,7 @@
 #include "test_signal.h"
 #include "timer.h"
 #include "freq.h"
+#include "dac.h"
 
 void rc11x_test_v3_board_init(void);
 

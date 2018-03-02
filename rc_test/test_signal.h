@@ -24,20 +24,20 @@ enum TEST_MOD{
 
 #define START 0X04
 /*118 & 119*/
-#define K7 PEout(10)
-#define K8 PEout(9)
-#define K9 PEout(8)
-#define K1 PEout(7)
-#define K2 PBout(1)
-#define K3 PBout(0)
-#define K0 PCout(5)
-#define K4 PCout(4)
-#define K5 PAout(7)
-#define K6 PAout(6)
+#define K7 PBout(2)
+#define K8 PCout(6)
+#define K9 PEout(7)
+#define K1 PDout(15)
+#define K2 PAout(3)
+#define K3 PEout(0)
+#define K0 PEout(11)
+#define K4 PDout(6)
+#define K5 PEout(10)
+#define K6 PDout(4)
 
 
-#define CLK PCout(5)
-#define DATA PEout(7)
+#define CLK PEout(11)
+#define DATA PDout(15)
 
 /*114*/
 #define D0 PEout(10)
@@ -52,6 +52,19 @@ enum TEST_MOD{
 #define A7 PAout(6)
 #define T1_1 PAout(1)
 #define T1_15 PAout(2)
+
+#define OS_TEST_1 PCout(13)
+#define OS_TEST_3 PEout(1)
+#define OS_TEST_4 PEout(13)
+#define OS_TEST_5 PAout(8)
+#define OS_TEST_6 PEout(12)
+#define OS_TEST_7 PAout(15)
+#define OS_TEST_8 PEout(9)
+#define OS_TEST_9 PDout(14)
+#define OS_TEST_10 PEout(8)
+#define OS_TEST_11 PCout(7)
+#define OS_TEST_12 PEout(5)
+#define OS_TEST_13 PBout(8)
 
 char test_signal_init(void);
 char start_sig(void);

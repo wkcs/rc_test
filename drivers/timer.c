@@ -51,43 +51,62 @@ void TIM3_IRQHandler(void)
 	TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
 }
 
-//通用定时器4中断初始化
-//arr：自动重装值。
-//psc：时钟预分频数
-//定时器溢出时间计算方法:Tout=((arr+1)*(psc+1))/Ft us.
-//Ft=定时器工作频率,单位:Mhz
-//这里使用的是定时器4!(定时器4挂在APB1上，时钟为HCLK/2)
 void TIM4_Init(u16 arr, u16 psc)
 {
-	TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;
+	GPIO_InitTypeDef GPIO_InitStructure;
+	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
 	NVIC_InitTypeDef NVIC_InitStructure;
+	TIM_ICInitTypeDef  TIM4_ICInitStructure;
 
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE); ///使能TIM4时钟
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);  //TIM4时钟使能
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE); //使能PORTB时钟
 
-	TIM_TimeBaseInitStructure.TIM_Period = arr;						//自动重装载值
-	TIM_TimeBaseInitStructure.TIM_Prescaler = psc;					//定时器分频
-	TIM_TimeBaseInitStructure.TIM_CounterMode = TIM_CounterMode_Up; //向上计数模式
-	TIM_TimeBaseInitStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7;		   
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;	   //复用功能
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz; //速度100MHz
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;	 //推挽复用输出
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;	 //下拉
+	GPIO_Init(GPIOB, &GPIO_InitStructure);			   //初始化PB7
 
-	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseInitStructure); //初始化TIM4
+	GPIO_PinAFConfig(GPIOB, GPIO_PinSource9, GPIO_AF_TIM4); //PB7复用位定时器4
 
-	TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE); //允许定时器3更新中断
-	//TIM_Cmd(TIM4, ENABLE);					   //使能定时器3
+	TIM_TimeBaseStructure.TIM_Prescaler = psc;					//定时器分频
+	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up; //向上计数模式
+	TIM_TimeBaseStructure.TIM_Period = arr;						//自动重装载值
+	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
 
-	NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;			  //定时器3中断
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1; //抢占优先级1
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;		  //子优先级3
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);
+	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
+
+	//初始化TIM4输入捕获参数
+	TIM4_ICInitStructure.TIM_Channel = TIM_Channel_2;				 
+	TIM4_ICInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;	 //上升沿捕获
+	TIM4_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI; //映射到TI2上
+	TIM4_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;			 //配置输入分频,不分频
+	TIM4_ICInitStructure.TIM_ICFilter = 0x00;						 //IC1F=0000 配置输入滤波器 不滤波
+	TIM_ICInit(TIM4, &TIM4_ICInitStructure);
+
+	TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE); //允许更新中断 ,允许CC1IE捕获中断
+
+	TIM_Cmd(TIM4, ENABLE); //使能定时器4
+
+	NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0; //抢占优先级3
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;		  //子优先级3
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			  //IRQ通道使能
+	NVIC_Init(&NVIC_InitStructure);	
+
+	//TIM_DMACmd(TIM4,TIM_DMA_Update, ENABLE);              
+    TIM_DMACmd(TIM4,TIM_DMA_CC2, ENABLE);	
+	
+	TIM_Cmd(TIM4, DISABLE);					  //根据指定的参数初始化VIC寄存器、
 }
 
 //定时器4中断服务函数
 void TIM4_IRQHandler(void)
 {
-	if (TIM_GetITStatus(TIM4, TIM_IT_Update) == SET) //溢出中断
-	{
-	}
-	TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
+	if (TIM_GetITStatus(TIM11, TIM_IT_Update) != RESET)
+		test_data.freq_data.timer_updata_num++;
+	TIM_ClearITPendingBit(TIM11, TIM_IT_Update);
 }
 
 //通用定时器5中断初始化
@@ -129,116 +148,3 @@ void TIM5_IRQHandler(void)
 	TIM_ClearITPendingBit(TIM5, TIM_IT_Update);
 }
 
-void TIM2_CH3_Cap_Init(u32 arr, u16 psc)
-{
-	GPIO_InitTypeDef GPIO_InitStructure;
-	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-	NVIC_InitTypeDef NVIC_InitStructure;
-	TIM_ICInitTypeDef  TIM2_ICInitStructure;
-
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);  //TIM2时钟使能
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE); //使能PORTB时钟
-
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;		   //GPIOB10
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;	   //复用功能
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz; //速度100MHz
-	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;	 //推挽复用输出
-	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;	 //下拉
-	GPIO_Init(GPIOB, &GPIO_InitStructure);			   //初始化PB10
-
-	GPIO_PinAFConfig(GPIOB, GPIO_PinSource10, GPIO_AF_TIM2); //PB10复用位定时器2
-
-	TIM_TimeBaseStructure.TIM_Prescaler = psc;					//定时器分频
-	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up; //向上计数模式
-	TIM_TimeBaseStructure.TIM_Period = arr;						//自动重装载值
-	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
-
-	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
-
-	//初始化TIM2输入捕获参数
-	TIM2_ICInitStructure.TIM_Channel = TIM_Channel_3;				 //CC1S=01 	选择输入端 IC3映射到TI3上
-	TIM2_ICInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;	 //上升沿捕获
-	TIM2_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI; //映射到TI3上
-	TIM2_ICInitStructure.TIM_ICPrescaler = TIM_ICPSC_DIV1;			 //配置输入分频,不分频
-	TIM2_ICInitStructure.TIM_ICFilter = 0x00;						 //IC1F=0000 配置输入滤波器 不滤波
-	TIM_ICInit(TIM2, &TIM2_ICInitStructure);
-
-	TIM_ITConfig(TIM2, TIM_IT_Update | TIM_IT_CC3, ENABLE); //允许更新中断 ,允许CC1IE捕获中断
-
-	TIM_Cmd(TIM2, ENABLE); //使能定时器2
-
-	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0; //抢占优先级3
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;		  //子优先级3
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			  //IRQ通道使能
-	NVIC_Init(&NVIC_InitStructure);	
-
-	TIM_DMACmd(TIM2,TIM_DMA_Update, ENABLE);              
-    TIM_DMACmd(TIM2,TIM_DMA_CC3, ENABLE);	
-	
-	TIM_Cmd(TIM2, DISABLE);					  //根据指定的参数初始化VIC寄存器、
-}
-
-
-//定时器2中断服务函数
-void TIM2_IRQHandler(void)
-{
-	if (test_data.freq_data.status > 0) //还未成功捕获
-	{
-		if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) //溢出
-		{
-			if (test_data.freq_data.status == 2) //已经开始采集
-			{
-				if (test_data.freq_data.timer_updata_num == 0xff) //超时
-				{
-					TIM_Cmd(TIM2, DISABLE);
-					test_data.freq_data.timer_updata_num = 0xff;
-					test_data.freq_data.timer_data = 0xff;
-					test_data.freq_data.status = 0xff;
-				}
-				else
-					test_data.freq_data.timer_updata_num++;
-			}
-			else
-			{
-				TIM_Cmd(TIM2, DISABLE);
-				test_data.freq_data.timer_updata_num = 0xff;
-				test_data.freq_data.timer_data = 0xff;
-				test_data.freq_data.status = 0xfe;
-			}
-		}
-		if (TIM_GetITStatus(TIM2, TIM_IT_CC3) != RESET) //捕获1发生捕获事件
-		{
-			if (test_data.freq_data.status == 2) //
-			{
-				test_data.freq_data.get_num++;
-				if (test_data.freq_data.timer_updata_num > 0)
-				{
-					TIM_Cmd(TIM2, DISABLE);
-					test_data.freq_data.timer_data = TIM_GetCapture3(TIM2);
-					test_data.freq_data.status = 3;
-				}
-				else
-				{
-					if (test_data.freq_data.get_num == test_data.freq_data.need_num) //成功捕获一万次上升沿
-					{
-						TIM_Cmd(TIM2, DISABLE);
-						test_data.freq_data.timer_data = TIM_GetCapture3(TIM2);
-						test_data.freq_data.status = 3;
-					}
-				}
-			}
-			else if (test_data.freq_data.status == 1) //第一次捕获到上升沿
-			{
-				test_data.freq_data.timer_updata_num = 0;
-				test_data.freq_data.timer_data = 0;
-				test_data.freq_data.get_num = 0;
-				TIM_Cmd(TIM2, DISABLE); //关闭定时器2
-				TIM_SetCounter(TIM2, 0);
-				test_data.freq_data.status = 2;
-				TIM_Cmd(TIM2, ENABLE); //使能定时器2
-			}
-		}
-	}
-	TIM_ClearITPendingBit(TIM2, TIM_IT_CC3 | TIM_IT_Update); //清除中断标志位
-}

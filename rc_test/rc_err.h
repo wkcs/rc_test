@@ -21,7 +21,8 @@ enum FREQ_ERR
 
 enum OS_ERR
 {
-    OS_ERR_2 = TARGET_FREQ_TOO_HIGH + 1,
+    OS_ERR_1 = TARGET_FREQ_TOO_HIGH + 1,
+    OS_ERR_2,
     OS_ERR_3,
     OS_ERR_4,
     OS_ERR_5,
@@ -32,13 +33,12 @@ enum OS_ERR
     OS_ERR_10,
     OS_ERR_11,
     OS_ERR_12,
-    OS_ERR_13,
-    OS_ERR_14,
+    OS_ERR_13
 };
 
 enum CHIP_TYPE_ERR
 {
-    CODE_WIDTH_ERR = OS_ERR_14 + 1,
+    CODE_WIDTH_ERR = OS_ERR_13 + 1,
 };
 
 enum CURRENT_ERR
@@ -61,6 +61,13 @@ enum BIN_ERR
     NOT_FIND_BIN = WORK_CURRENT_K9_ERR + 1
 };
 
+enum SYS_ERR
+{
+    OS_ADC_ERR = RC_ERR_NO_MAX + 1,
+    STANDBY_CURRENT_ADC_ERR,
+    WORK_CURRENT_ADC_ERR
+};
+
 inline const char *get_err_name(int32_t err)
 {
     switch (RC_ABS(err))
@@ -71,6 +78,7 @@ inline const char *get_err_name(int32_t err)
         ERR_NAME_CASE(TARGET_FREQ_TOO_LOW);
         ERR_NAME_CASE(TARGET_FREQ_TOO_HIGH);
         /*OS_ERR*/
+        ERR_NAME_CASE(OS_ERR_1);
         ERR_NAME_CASE(OS_ERR_2);
         ERR_NAME_CASE(OS_ERR_3);
         ERR_NAME_CASE(OS_ERR_4);
@@ -83,7 +91,6 @@ inline const char *get_err_name(int32_t err)
         ERR_NAME_CASE(OS_ERR_11);
         ERR_NAME_CASE(OS_ERR_12);
         ERR_NAME_CASE(OS_ERR_13);
-        ERR_NAME_CASE(OS_ERR_14);
         /*CHIP_TYPE_ERR*/
         ERR_NAME_CASE(CODE_WIDTH_ERR);
         /*CURRENT_ERR*/
@@ -100,6 +107,10 @@ inline const char *get_err_name(int32_t err)
         ERR_NAME_CASE(WORK_CURRENT_K9_ERR);
         /*BIN_ERR*/
         ERR_NAME_CASE(NOT_FIND_BIN);
+         /*SYS_ERR*/
+        ERR_NAME_CASE(OS_ADC_ERR);
+        ERR_NAME_CASE(STANDBY_CURRENT_ADC_ERR);
+        ERR_NAME_CASE(WORK_CURRENT_ADC_ERR);
     }
     return "unknown err";
 }

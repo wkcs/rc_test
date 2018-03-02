@@ -276,6 +276,7 @@ typedef struct __current_save{
 }current_save_t;
 
 typedef struct __os_save{
+    uint16_t os_voltage_1;
     uint16_t os_voltage_2;
     uint16_t os_voltage_3;
     uint16_t os_voltage_4;
@@ -288,7 +289,6 @@ typedef struct __os_save{
     uint16_t os_voltage_11;
     uint16_t os_voltage_12;
     uint16_t os_voltage_13;
-    uint16_t os_voltage_14;
 }os_save_t;
 
 

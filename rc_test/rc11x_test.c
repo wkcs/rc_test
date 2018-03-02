@@ -6,6 +6,7 @@
 #include "test_machine_com.h"
 #include "test_type.h"
 #include "test_current.h"
+#include "test_os.h"
 #include "rc_err.h"
 
 uint8_t rc11x_test_start(void)
@@ -17,7 +18,15 @@ uint8_t rc11x_test_start(void)
     power_on(test_para.power_para.open_time);
     if (test_para.test_en_para.os_test_en)
     {
-
+        err = os_test();
+        if (err != 0)
+        {
+            bin = get_bin_from_err(err);
+            test_save.err_save = err;
+            power_off(test_para.power_para.clos_time);
+            test_save.bin_save = bin;
+            return bin;
+        }
     }
     if (test_para.test_en_para.code_width_test_en)
     {
@@ -161,32 +170,32 @@ void send_test_results(void)
     tx_buf[50] = (uint8_t)(test_save.current_save.work_current_k9 >> 8);
     tx_buf[51] = (uint8_t)test_save.current_save.work_current_k9;
     /*os_save*/
-    tx_buf[52] = (uint8_t)(test_save.os_save.os_voltage_2 >> 8);
-    tx_buf[53] = (uint8_t)test_save.os_save.os_voltage_2;
-    tx_buf[54] = (uint8_t)(test_save.os_save.os_voltage_3 >> 8);
-    tx_buf[55] = (uint8_t)test_save.os_save.os_voltage_3;
-    tx_buf[56] = (uint8_t)(test_save.os_save.os_voltage_4 >> 8);
-    tx_buf[57] = (uint8_t)test_save.os_save.os_voltage_4;
-    tx_buf[58] = (uint8_t)(test_save.os_save.os_voltage_5 >> 8);
-    tx_buf[59] = (uint8_t)test_save.os_save.os_voltage_5;
-    tx_buf[60] = (uint8_t)(test_save.os_save.os_voltage_6 >> 8);
-    tx_buf[61] = (uint8_t)test_save.os_save.os_voltage_6;
-    tx_buf[62] = (uint8_t)(test_save.os_save.os_voltage_7 >> 8);
-    tx_buf[63] = (uint8_t)test_save.os_save.os_voltage_7;
-    tx_buf[64] = (uint8_t)(test_save.os_save.os_voltage_8 >> 8);
-    tx_buf[65] = (uint8_t)test_save.os_save.os_voltage_8;
-    tx_buf[66] = (uint8_t)(test_save.os_save.os_voltage_9 >> 8);
-    tx_buf[67] = (uint8_t)test_save.os_save.os_voltage_9;
-    tx_buf[68] = (uint8_t)(test_save.os_save.os_voltage_10 >> 8);
-    tx_buf[69] = (uint8_t)test_save.os_save.os_voltage_10;
-    tx_buf[70] = (uint8_t)(test_save.os_save.os_voltage_11 >> 8);
-    tx_buf[71] = (uint8_t)test_save.os_save.os_voltage_11;
-    tx_buf[72] = (uint8_t)(test_save.os_save.os_voltage_12 >> 8);
-    tx_buf[73] = (uint8_t)test_save.os_save.os_voltage_12;
-    tx_buf[74] = (uint8_t)(test_save.os_save.os_voltage_13 >> 8);
-    tx_buf[75] = (uint8_t)test_save.os_save.os_voltage_13;
-    tx_buf[76] = (uint8_t)(test_save.os_save.os_voltage_14 >> 8);
-    tx_buf[77] = (uint8_t)test_save.os_save.os_voltage_14;
+    tx_buf[52] = (uint8_t)(test_save.os_save.os_voltage_1 >> 8);
+    tx_buf[53] = (uint8_t)test_save.os_save.os_voltage_1;
+    tx_buf[54] = (uint8_t)(test_save.os_save.os_voltage_2 >> 8);
+    tx_buf[55] = (uint8_t)test_save.os_save.os_voltage_2;
+    tx_buf[56] = (uint8_t)(test_save.os_save.os_voltage_3 >> 8);
+    tx_buf[57] = (uint8_t)test_save.os_save.os_voltage_3;
+    tx_buf[58] = (uint8_t)(test_save.os_save.os_voltage_4 >> 8);
+    tx_buf[59] = (uint8_t)test_save.os_save.os_voltage_4;
+    tx_buf[60] = (uint8_t)(test_save.os_save.os_voltage_5 >> 8);
+    tx_buf[61] = (uint8_t)test_save.os_save.os_voltage_5;
+    tx_buf[62] = (uint8_t)(test_save.os_save.os_voltage_6 >> 8);
+    tx_buf[63] = (uint8_t)test_save.os_save.os_voltage_6;
+    tx_buf[64] = (uint8_t)(test_save.os_save.os_voltage_7 >> 8);
+    tx_buf[65] = (uint8_t)test_save.os_save.os_voltage_7;
+    tx_buf[66] = (uint8_t)(test_save.os_save.os_voltage_8 >> 8);
+    tx_buf[67] = (uint8_t)test_save.os_save.os_voltage_8;
+    tx_buf[68] = (uint8_t)(test_save.os_save.os_voltage_9 >> 8);
+    tx_buf[69] = (uint8_t)test_save.os_save.os_voltage_9;
+    tx_buf[70] = (uint8_t)(test_save.os_save.os_voltage_10 >> 8);
+    tx_buf[71] = (uint8_t)test_save.os_save.os_voltage_10;
+    tx_buf[72] = (uint8_t)(test_save.os_save.os_voltage_11 >> 8);
+    tx_buf[73] = (uint8_t)test_save.os_save.os_voltage_11;
+    tx_buf[74] = (uint8_t)(test_save.os_save.os_voltage_12 >> 8);
+    tx_buf[75] = (uint8_t)test_save.os_save.os_voltage_12;
+    tx_buf[76] = (uint8_t)(test_save.os_save.os_voltage_13 >> 8);
+    tx_buf[77] = (uint8_t)test_save.os_save.os_voltage_13;
     /*bin_save*/
     tx_buf[78] = (uint8_t)test_save.bin_save;
     send_data_to_uart1(tx_buf, tx_buf[1] + 2);

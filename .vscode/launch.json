@@ -30,7 +30,7 @@
                         "ignoreFailures": false
                     },
                     {
-                        "text": "file C:/Users/RCFAE_1/Desktop/rc11x_test_v3/rc11x_test.elf",
+                        "text": "file C:/Users/RCFAE_1/Desktop/rc11x_test_v4/rc11x_test.elf",
                         "description": "load symbols",
                         "ignoreFailures": false
                     },
@@ -40,7 +40,7 @@
                         "ignoreFailures": false
                     },
                     {
-                        "text": "break MCU_START",
+                        "text": "break rc_test_loop",    
                         "description": "halt",
                         "ignoreFailures": false
                     },
@@ -63,7 +63,7 @@
                     "MIDebuggerPath": "arm-none-eabi-gdb.exe",
                     "serverStarted": "target halted due to debug-request, current mode: Thread",
                     "debugServerPath": "openocd.exe",
-                    "debugServerArgs": "-f \"C:/Users/RCFAE_1/Desktop/rc11x_test_v3/openocd.cfg\" -c init -c \"reset halt\"",
+                    "debugServerArgs": "-f \"C:/Users/RCFAE_1/Desktop/rc11x_test_v4/openocd.cfg\" -c init -c \"reset halt\"",
                 },
                 "preLaunchTask": "build"
             }

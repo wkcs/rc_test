@@ -125,6 +125,7 @@ void test_save_init(void)
     test_save.current_save.work_current_k8 = 0;
     test_save.current_save.work_current_k9 = 0;
 
+    test_save.os_save.os_voltage_1 = 0;
     test_save.os_save.os_voltage_2 = 0;
     test_save.os_save.os_voltage_3 = 0;
     test_save.os_save.os_voltage_4 = 0;
@@ -137,7 +138,6 @@ void test_save_init(void)
     test_save.os_save.os_voltage_11 = 0;
     test_save.os_save.os_voltage_12 = 0;
     test_save.os_save.os_voltage_13 = 0;
-    test_save.os_save.os_voltage_14 = 0;
 
     test_save.bin_save = 0;
 }

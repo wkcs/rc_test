@@ -62,7 +62,8 @@
                 "${workspaceRoot}/kernel",
                 "${workspaceRoot}/lib",
                 "${workspaceRoot}/rc_test",
-                "${workspaceRoot}/cmd"
+                "${workspaceRoot}/cmd",
+                "${workspaceRoot}/hal/inc"
             ],
             "defines": [
                 "_DEBUG",

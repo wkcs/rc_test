@@ -3,16 +3,16 @@
 
 #include "sys.h"
 
-//#define SOT PEin(2)
-#define EOT PEout(3)
-#define BIN1 PEout(4)
-#define BIN2 PEout(5)
-#define BIN3 PEout(6)
-#define BIN4 PCout(13)
-#define BIN5 PCout(14)
-#define BIN6 PCout(15)
-#define BIN7 PCout(0)
-#define BIN8 PCout(1)
+#define SOT PDin(13)
+#define EOT PDout(12)
+#define BIN1 PBout(13)
+#define BIN2 PBout(12)
+#define BIN3 PBout(15)
+#define BIN4 PBout(14)
+#define BIN5 PDout(9)
+#define BIN6 PDout(8)
+#define BIN7 PDout(11)
+#define BIN8 PDout(10)
 
 void test_mach_init(void);
 void test_mach_wait_start_sig(void);              /*Wait for the test machine to start the signal.*/

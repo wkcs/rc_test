@@ -160,7 +160,7 @@ flash: $(TARGET).hex
 debug: $(TARGET).elf
 	@echo   GDB DEBUG $<
 	$(Q)$(GDB) -iex 'target extended | $(OOCD) $(OOCDFLAGS) -c "gdb_port pipe"' \
-	-iex 'monitor reset halt' -ex 'load' -ex 'break main' -ex 'c' $(TARGET).elf
+	-iex 'monitor reset halt' -ex 'load' -ex 'break rc_test_loop' -ex 'c' $(TARGET).elf
 
 -include $(DEPS)
 
