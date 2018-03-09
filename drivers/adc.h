@@ -7,8 +7,8 @@
 extern "C" {
 #endif 
 
-void adc1_init(void);
-void adc2_init(void);
+void adc_init(void);
+void adc_test_init(void);
 uint16_t *get_os_adc(void);
 uint16_t *get_work_current_adc(uint16_t num);
 uint16_t *get_standby_current_adc(uint16_t num);

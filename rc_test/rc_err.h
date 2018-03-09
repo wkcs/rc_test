@@ -75,6 +75,7 @@ inline const char *get_err_name(int32_t err)
         case 0: return "NO_ERR";
         /*FREQ_ERR*/
         ERR_NAME_CASE(NO_FREQ);
+        //ERR_NAME_CASE(CAL_ERR);
         ERR_NAME_CASE(TARGET_FREQ_TOO_LOW);
         ERR_NAME_CASE(TARGET_FREQ_TOO_HIGH);
         /*OS_ERR*/

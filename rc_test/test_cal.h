@@ -9,6 +9,7 @@ extern "C" {
 
 int32_t cal_one(uint8_t mode, uint16_t data, uint16_t test_num);
 int32_t auto_cal(uint8_t mode, uint16_t *data, int32_t start_freq);
+int32_t auto_cal_test(void);
 
 #ifdef __cplusplus
 }

@@ -1,6 +1,8 @@
 #ifndef __RC_DEBUG_H__
 #define __RC_DEBUG_H__
 
+#include "sys.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

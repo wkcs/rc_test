@@ -6,7 +6,10 @@
 #include "test_machine_com.h"
 #include "test_type.h"
 #include "test_current.h"
+#include "test_os.h"
 #include "rc_err.h"
+#include "rc_debug.h"
+#include "rc_message.h"
 
 uint8_t rc11x_test_start(void)
 {
@@ -73,7 +76,8 @@ uint8_t rc11x_test_start(void)
     }
     if (test_para.test_en_para.auto_cal_test_en)
     {
-        err = auto_cal(test_para.cal_para.auto_cal_mode, &data, test_save.freq_save.start_freq);
+        err = auto_cal_test();
+        //err = auto_cal(test_para.cal_para.auto_cal_mode, &data, test_save.freq_save.start_freq);
         if (err != 0)
         {
             if (test_para.debug_para.debug_info_en)
@@ -211,5 +215,5 @@ void send_test_results(void)
     tx_buf[77] = (uint8_t)test_save.os_save.os_voltage_13;
     /*bin_save*/
     tx_buf[78] = (uint8_t)test_save.bin_save;
-    send_data_to_uart1(tx_buf, tx_buf[1] + 2);
+    rc_send_message(tx_buf + 2, 77, TEST_SAVE_MES);
 }

@@ -1,7 +1,8 @@
 #include "test_type.h"
 #include "board.h"
+#include "rc_debug.h"
 
-#define TEST_PARA_HEAD 203044575
+#define TEST_PARA_HEAD 203044352
 
 test_para_t test_para;
 test_data_t test_data;
@@ -13,8 +14,11 @@ void test_para_init(void)
     W25QXX_Read((uint8_t *)(&buf), 0, 4);
     if (buf == TEST_PARA_HEAD)
         test_para_load();
-    else
+    else {
+        rc_printf("buf:%d\r\n", buf);
+        rc_printf("load test para error!\r\n");
         test_para_restore();
+    }
 }
 
 void test_para_restore(void)
@@ -39,14 +43,14 @@ void test_para_restore(void)
     test_para.cal_para.freq_cal_test_num[4] = 300;
     test_para.cal_para.freq_cal_test_num[5] = 600;
     test_para.cal_para.freq_cal_test_num[6] = 900;
-    test_para.cal_para.freq_cal_test_num[7] = 1200;
-    test_para.cal_para.freq_cal_test_num[8] = 1500;
-    test_para.cal_para.freq_cal_test_num[9] = 10000;
-    test_para.cal_para.start_cal_test_num = 2000;
-    test_para.cal_para.bin_cal_test_num = 20000;
+    test_para.cal_para.freq_cal_test_num[7] = 1000;
+    test_para.cal_para.freq_cal_test_num[8] = 1000;
+    test_para.cal_para.freq_cal_test_num[9] = 1000;
+    test_para.cal_para.start_cal_test_num = 1000;
+    test_para.cal_para.bin_cal_test_num = 1000;
 
     test_para.efuse_para.efuse_mode = 0;
-    test_para.efuse_para.efuse_test_num = 10000;
+    test_para.efuse_para.efuse_test_num = 1000;
     test_para.efuse_para.efuse_time = 5;
 
     test_para.sub_bin_para.bin_en = 0x0f;

@@ -7,10 +7,12 @@
 #include "dac.h"
 
 #define SOCKET_POWER PAout(0)
+#define CURRENT_TETS_L PEout(3)
+#define CURRENT_TETS_H PEout(2)
 
 typedef enum {
-	SOCKET_POWER_OFF = 0,
-	SOCKET_POWER_ON
+	SOCKET_POWER_ON = 0,
+	SOCKET_POWER_OFF
 } socket_power_state;
 
 typedef enum {

@@ -13,6 +13,9 @@
 #include "timer.h"
 #include "freq.h"
 #include "dac.h"
+#include "usbd_cdc_vcp.h"
+#include "usbd_usr.h" 
+#include "usbd_desc.h"
 
 void rc11x_test_v3_board_init(void);
 

@@ -9,6 +9,14 @@
         "freq.h": "c",
         "test_current.h": "c",
         "cmd_list.h": "c",
-        "stdint.h": "c"
+        "stdint.h": "c",
+        "string.h": "c",
+        "stdarg.h": "c",
+        "stdio.h": "c",
+        "usb_dcd_int.h": "c",
+        "rc_debug.h": "c",
+        "test_type.h": "c",
+        "usbd_cdc_vcp.h": "c",
+        "usbd_usr.h": "c"
     }
 }

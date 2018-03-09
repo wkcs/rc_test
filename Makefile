@@ -12,7 +12,7 @@ LIBS += $(TOP_DIR)/cmsis/st_lib
 
 # 宏定义
 #DEFS		= -D ARM_MATH_CM4=1U -D STM32F407xx -D USE_HAL_DRIVER -D __MPU_PRESENT=1U
-DEFS		= -D STM32F40_41xxx -D USE_STDPERIPH_DRIVER -D __VFP_FP__
+DEFS		= -D STM32F40_41xxx -D USE_STDPERIPH_DRIVER -D __VFP_FP__ -D USE_USB_OTG_FS 
 
 #链接脚本
 LDSCRIPT    = $(TOP_DIR)/stm32_flash.ld
@@ -35,7 +35,11 @@ INC_DIR = -I $(TOP_DIR)/board/v3          \
           -I $(TOP_DIR)/kernel            \
           -I $(TOP_DIR)/lib               \
           -I $(TOP_DIR)/rc_test           \
-		  -I $(TOP_DIR)/cmd
+		  -I $(TOP_DIR)/cmd               \
+		  -I $(TOP_DIR)/usb/STM32_USB_Device_Library/Class/cdc/inc \
+		  -I $(TOP_DIR)/usb/STM32_USB_Device_Library/Core/inc \
+		  -I $(TOP_DIR)/usb/STM32_USB_OTG_Driver/inc \
+		  -I $(TOP_DIR)/usb/USB_APP
 
 #SOURCE_DIRS = $(TOP_DIR)/core          \
               $(TOP_DIR)/cmd           \
@@ -76,7 +80,7 @@ LDFLAGS += $(LIBS:%=-L %)
 -include $(TOP_DIR)/lib/make.inc
 -include $(TOP_DIR)/rc_test/make.inc
 -include $(TOP_DIR)/cmd/make.inc
-
+-include $(TOP_DIR)/usb/make.inc
 
  
 C_OBJS = $(C_SRCS:./%.c=$(TOP_DIR)/debug/%.o)

@@ -1,18 +1,17 @@
 #include "test_type.h"
 #include "cmd_list.h"
 #include "cmd.h"
+#include "rc_message.h"
 
 static void send_firmware(void)
 {
-    uint8_t tx_buf[32];
+    uint8_t tx_buf[3];
 
-    tx_buf[0] = 255;
-    tx_buf[1] = 30;
-    tx_buf[2] = VERSION_1;
-    tx_buf[3] = VERSION_2;
-    tx_buf[4] = VERSION_3;
+    tx_buf[0] = VERSION_1;
+    tx_buf[1] = VERSION_2;
+    tx_buf[2] = VERSION_3;
 
-    send_data_to_uart1(tx_buf, tx_buf[1] + 2);
+    rc_send_message(tx_buf, 3, FIRMWARE_MES);
 }
 
 static void cmd_main(uint8_t *buf)

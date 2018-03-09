@@ -3,6 +3,7 @@
 #include "cmd.h"
 #include "rc_debug.h"
 #include "print_para.h"
+#include "rc_message.h"
 
 void save_para(uint8_t *buf)
 {
@@ -214,7 +215,7 @@ void load_para(void)
     /*debug_para*/
     tx_buf[134] = test_para.debug_para.debug_info_en;
 
-    send_data_to_uart1(tx_buf, tx_buf[1] + 2);
+    rc_send_message(tx_buf + 2, 133, TEST_PARA_MES);
 }
 
 static void cmd_main(uint8_t *buf)

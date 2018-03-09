@@ -4,20 +4,24 @@
 #include "test_signal.h"
 #include "rc_debug.h"
 
-#define SC_TEST_NUM 1000        /*待机电流采样次数*/
+#define SC_TEST_NUM 100        /*待机电流采样次数*/
 #define WC_TEST_NUM 1000        /*工作电流采样次数*/
 
 int32_t get_standby_current(void)
 {
     uint16_t i, *buf, temp;
     uint32_t adc_sum = 0;      /*ADC采样结果的总和*/
+    CURRENT_TETS_H = DISABLE;
+    CURRENT_TETS_L = ENABLE;
+    delay_ms(30);
     buf = get_standby_current_adc(SC_TEST_NUM);
+    CURRENT_TETS_L = DISABLE;
     if (buf == 0)
         return -STANDBY_CURRENT_ADC_ERR;
     for (i = 0; i < SC_TEST_NUM; i++) {
         adc_sum += buf[i];
     }
-    temp = (uint16_t)((float)adc_sum * 0.081348 / SC_TEST_NUM);    /*0.081348 = 3332 / 4096 / 10, 结果为uA*/
+    temp = (uint16_t)(((float)adc_sum / SC_TEST_NUM + 10) * 0.079346 - 7);    /*0.079346 = 3250 / 4096 / 10, 结果为uA*/
     return (int32_t)temp;
 }
 
@@ -25,13 +29,19 @@ int32_t get_work_current(void)
 {
     uint16_t i, *buf, temp;
     uint32_t adc_sum = 0;      /*ADC采样结果的总和*/
+    OS_TEST_3 = ENABLE;
+    CURRENT_TETS_H = ENABLE;
+    CURRENT_TETS_L = DISABLE;
+    //delay_ms(100);
     buf = get_work_current_adc(WC_TEST_NUM);
+    CURRENT_TETS_H = DISABLE;
+    OS_TEST_3 = DISABLE;
     if (buf == 0)
         return -WORK_CURRENT_ADC_ERR;
     for (i = 0; i < WC_TEST_NUM; i++) {
         adc_sum += buf[i];
     }
-    temp = (uint16_t)((float)adc_sum * 0.813477 / WC_TEST_NUM);    /*0.081348 = 3332 / 4096, 结果为uA*/
+    temp = (uint16_t)((float)adc_sum / WC_TEST_NUM);    /*3.17828  = 3332 / 4096, 结果为uA*/
     return (int32_t)temp;
 }
 

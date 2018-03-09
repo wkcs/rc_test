@@ -1,5 +1,6 @@
 #include "test_check.h"
 #include "rc_math.h"
+#include "rc_debug.h"
 
 int32_t check_code_width(void)
 {

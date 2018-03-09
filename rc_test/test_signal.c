@@ -30,13 +30,13 @@ char test_signal_init(void)
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE); //使能GPIOD时钟
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE); //使能GPIOE时钟
 
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_8 | GPIO_Pin_15;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_15;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;      //普通输出模式
     GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;     //推挽输出
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;   //100MHz
     GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;       //下拉
     GPIO_Init(GPIOA, &GPIO_InitStructure);             //初始化
-	GPIO_ResetBits(GPIOA, GPIO_Pin_3 | GPIO_Pin_8 | GPIO_Pin_15);
+	GPIO_ResetBits(GPIOA, GPIO_Pin_8 | GPIO_Pin_15);
 
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2 | GPIO_Pin_8;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);             //初始化
@@ -50,9 +50,9 @@ char test_signal_init(void)
 	GPIO_Init(GPIOD, &GPIO_InitStructure);             //初始化
 	GPIO_ResetBits(GPIOD, GPIO_Pin_4 | GPIO_Pin_6 | GPIO_Pin_14 | GPIO_Pin_15);
 
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_5 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_5 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_15;
 	GPIO_Init(GPIOE, &GPIO_InitStructure);             //初始化
-	GPIO_ResetBits(GPIOE, GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_5 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13);
+	GPIO_ResetBits(GPIOE, GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_5 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_15);
 
 	test_data.test_mod = NORMAL_MODE;
 	return 0;
@@ -181,9 +181,9 @@ void exit_test(void)
 	irq_save = os_cpu_sr_save();
 	test_data.test_mod = NORMAL_MODE;
 	K2 = 1;
-	delay_us(100);
+	delay_us(3500);
 	K2 = 0;
-	delay_us(100);
+	delay_us(3500);
 	os_cpu_sr_restore(irq_save);
 }
 

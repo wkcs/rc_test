@@ -133,7 +133,7 @@ void EXTI15_10_IRQHandler(void)
     if(EXTI_GetITStatus(EXTI_Line13)!=RESET)
     {
 	    test_data.test_machine_data.test_start = ENABLE;	 
-	    EXTI_ClearITPendingBit(EXTI_Line13);//清除LINE2上的中断标志位 
+	    EXTI_ClearITPendingBit(EXTI_Line13);//清除LINE13上的中断标志位 
     }
 }
 
