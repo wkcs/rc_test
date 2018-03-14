@@ -35,15 +35,15 @@ int rc_test_loop(void)
 				}
 			}
 			if (test_para.debug_para.debug_info_en) {
-				rc_printf("bin:Bin%d\r\n", bin);
+				rc_printf("bin:Bin%d\r\n\r\n", bin);
 			}
 			test_mach_send_end_sig(bin);
 			send_test_results();
 			test_data.test_machine_data.test_start = DISABLE;
-		} else if (uart_usb_data.rx_status == 1) {
-			cmd_run(uart_usb_data.rx_buf[0], uart_usb_data.rx_buf);
-			uart_usb_data.rx_status = 0;
-			uart_usb_data.rx_len = 0;
+		} else if (uart1_data.rx_status == 1) {
+			cmd_run(uart1_data.rx_buf[0], uart1_data.rx_buf);
+			uart1_data.rx_status = 0;
+			uart1_data.rx_len = 0;
 		} else {
 			if (num == 1000000) {
 				rc_send_message(0, 0, NULL_MES);

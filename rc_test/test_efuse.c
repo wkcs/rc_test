@@ -10,9 +10,9 @@ int32_t efuse_chip(uint8_t mode, uint16_t data, uint16_t test_num)
     start_sig();
     efuse_sig(data);
 
-    power_restart(test_para.power_para.restart_time);
+    /*power_restart(test_para.power_para.restart_time);
     start_sig();
-    efuse_sig(data);
+    efuse_sig(data);*/
     if (mode)
     {
         freq = get_freq(test_num);
@@ -21,6 +21,7 @@ int32_t efuse_chip(uint8_t mode, uint16_t data, uint16_t test_num)
     }
     delay_ms(test_para.efuse_para.efuse_time);
     exit_test();
+    power_off(5000);
     test_save.freq_save.code = data;
     return freq;
 }

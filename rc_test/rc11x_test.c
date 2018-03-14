@@ -15,7 +15,7 @@ uint8_t rc11x_test_start(void)
 {
     uint8_t bin;
     int32_t err;
-    uint16_t data;
+    uint16_t data = 0;
     test_save_init();
     power_on(test_para.power_para.open_time);
     if (test_para.test_en_para.os_test_en)
@@ -76,8 +76,8 @@ uint8_t rc11x_test_start(void)
     }
     if (test_para.test_en_para.auto_cal_test_en)
     {
-        err = auto_cal_test();
-        //err = auto_cal(test_para.cal_para.auto_cal_mode, &data, test_save.freq_save.start_freq);
+        //err = auto_cal_test();
+        err = auto_cal(test_para.cal_para.auto_cal_mode, &data, test_save.freq_save.start_freq);
         if (err != 0)
         {
             if (test_para.debug_para.debug_info_en)
@@ -91,7 +91,11 @@ uint8_t rc11x_test_start(void)
     }
     if (test_para.test_en_para.efuse_test_en)
     {
-        err = efuse_chip(test_para.efuse_para.efuse_mode, data, 0);
+        if (data != 0) {
+            err = efuse_chip(test_para.efuse_para.efuse_mode, data, 0);
+        }
+        else
+            err = 0;
         if (err != 0)
         {
             if (test_para.debug_para.debug_info_en)

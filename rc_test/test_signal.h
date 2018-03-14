@@ -28,7 +28,7 @@ enum TEST_MOD{
 #define K8 PCout(6)
 #define K9 PEout(7)
 #define K1 PDout(15)
-#define K2 PEout(15)
+#define K2 PEout(6)
 #define K3 PEout(0)
 #define K0 PEout(11)
 #define K4 PDout(6)

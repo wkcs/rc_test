@@ -3,7 +3,7 @@
 #include "dma.h"
 
 static uint16_t adc1_buf[36];   /*存放ADC1规则组转换结果，用于OS测试*/
-static uint16_t adc2_buf[1000];   /*存放ADC2规则组转换结果，用于电流测试*/
+static uint16_t adc2_buf[10000];   /*存放ADC2规则组转换结果，用于电流测试*/
 
 void adc_init(void)
 {

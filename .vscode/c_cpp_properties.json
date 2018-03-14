@@ -63,7 +63,11 @@
                 "${workspaceRoot}/lib",
                 "${workspaceRoot}/rc_test",
                 "${workspaceRoot}/cmd",
-                "${workspaceRoot}/hal/inc"
+                "${workspaceRoot}/hal/inc",
+                "${workspaceRoot}/usb/USB_APP",
+                "${workspaceRoot}/usb/STM32_USB_Device_Library/Class/cdc/inc",
+                "${workspaceRoot}/usb/STM32_USB_Device_Library/Core/inc",
+                "${workspaceRoot}/usb/STM32_USB_OTG_Driver/inc"
             ],
             "defines": [
                 "_DEBUG",

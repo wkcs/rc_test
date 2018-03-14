@@ -50,9 +50,9 @@ char test_signal_init(void)
 	GPIO_Init(GPIOD, &GPIO_InitStructure);             //初始化
 	GPIO_ResetBits(GPIOD, GPIO_Pin_4 | GPIO_Pin_6 | GPIO_Pin_14 | GPIO_Pin_15);
 
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_5 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_15;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13;
 	GPIO_Init(GPIOE, &GPIO_InitStructure);             //初始化
-	GPIO_ResetBits(GPIOE, GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_5 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_15);
+	GPIO_ResetBits(GPIOE, GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13);
 
 	test_data.test_mod = NORMAL_MODE;
 	return 0;
@@ -181,9 +181,9 @@ void exit_test(void)
 	irq_save = os_cpu_sr_save();
 	test_data.test_mod = NORMAL_MODE;
 	K2 = 1;
-	delay_us(3500);
+	delay_us(100);
 	K2 = 0;
-	delay_us(3500);
+	delay_us(100);
 	os_cpu_sr_restore(irq_save);
 }
 

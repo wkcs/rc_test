@@ -16,6 +16,6 @@ void rc_printf(char* fmt,...)
 	va_start(ap,fmt);
 	vsprintf((char*)(buf),fmt,ap);
 	va_end(ap);
-	rc_send_message(buf, strlen((const char*)buf), RC_DEBUG_MES);
+	rc_send_message((uint8_t *)buf, strlen((const char*)buf), RC_DEBUG_MES);
 }
 

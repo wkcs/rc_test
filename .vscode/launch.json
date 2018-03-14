@@ -7,65 +7,16 @@
         "configurations": [
             {
                 "name": "STM32 Launch",
-                "type": "cppdbg",
+                "type": "cortex-debug",
                 "request": "launch",
-                "targetArchitecture": "arm",
-                "MIMode": "gdb",
-                "logging": {
-                    "engineLogging": true,
-                    "moduleLoad": false,
-                    "exceptions": false,
-                    "trace": false,
-                    "traceResponse": false
-                },
-                "customLaunchSetupCommands": [
-                    {
-                        "text": "target remote localhost:3333",
-                        "description": "connect to remote target",
-                        "ignoreFailures": false
-                    },
-                    {
-                        "text": "monitor reset halt",
-                        "description": "halt",
-                        "ignoreFailures": false
-                    },
-                    {
-                        "text": "file C:/Users/RCFAE_1/Desktop/rc11x_test_v4/rc11x_test.elf",
-                        "description": "load symbols",
-                        "ignoreFailures": false
-                    },
-                    {
-                        "text": "load",
-                        "description": "load to remote MCU",
-                        "ignoreFailures": false
-                    },
-                    {
-                        "text": "break rc_test_loop",    
-                        "description": "halt",
-                        "ignoreFailures": false
-                    },
-                ],
-                "launchCompleteCommand": "None",
-                "program": "${workspaceRoot}\\rc11x_test.elf",
-                "args": [
-                    "target remote localhost:3333"
-                ],
-                "stopAtEntry": true,
+                "servertype": "openocd",
                 "cwd": "${workspaceRoot}",
-                "environment": [],
-                "externalConsole": true,
-                "filterStderr": true,
-                "filterStdout": false,
-                "miDebuggerServerAddress": "localhost:3333",
-                "serverLaunchTimeout": 5000,
-                "windows": {
-                    "MIMode": "gdb",
-                    "MIDebuggerPath": "arm-none-eabi-gdb.exe",
-                    "serverStarted": "target halted due to debug-request, current mode: Thread",
-                    "debugServerPath": "openocd.exe",
-                    "debugServerArgs": "-f \"C:/Users/RCFAE_1/Desktop/rc11x_test_v4/openocd.cfg\" -c init -c \"reset halt\"",
-                },
-                "preLaunchTask": "build"
+                "executable": "./rc11x_test.elf",
+                "device": "STM32F407VE",
+                "svdFile": "",
+                "configFiles": [
+                    "${workspaceRoot}/openocd.cfg"
+                ]
             }
         ]
     }

@@ -27,22 +27,22 @@ void test_para_restore(void)
 
     test_para.test_para_head = TEST_PARA_HEAD;
 
-    test_para.test_signal_para.clk_delay_num = 5;
+    test_para.test_signal_para.clk_delay_num = 30;
 
-    test_para.power_para.restart_time = 2000;
+    test_para.power_para.restart_time = 5000;
     test_para.power_para.open_time = 2000;
     test_para.power_para.clos_time = 2000;
 
     test_para.freq_test_para.target_freq = 423750;
 
-    test_para.cal_para.auto_cal_mode = 0;
+    test_para.cal_para.auto_cal_mode = 1;
     test_para.cal_para.freq_cal_test_num[0] = 100;
     test_para.cal_para.freq_cal_test_num[1] = 100;
     test_para.cal_para.freq_cal_test_num[2] = 100;
     test_para.cal_para.freq_cal_test_num[3] = 200;
-    test_para.cal_para.freq_cal_test_num[4] = 300;
-    test_para.cal_para.freq_cal_test_num[5] = 600;
-    test_para.cal_para.freq_cal_test_num[6] = 900;
+    test_para.cal_para.freq_cal_test_num[4] = 1000;
+    test_para.cal_para.freq_cal_test_num[5] = 1000;
+    test_para.cal_para.freq_cal_test_num[6] = 1000;
     test_para.cal_para.freq_cal_test_num[7] = 1000;
     test_para.cal_para.freq_cal_test_num[8] = 1000;
     test_para.cal_para.freq_cal_test_num[9] = 1000;
@@ -81,9 +81,9 @@ void test_para_restore(void)
     test_para.voltage_para.default_voltage = 3300;
     test_para.voltage_para.efuse_voltage = 3600;
 
-    test_para.current_para.standby_current_max = 5;
+    test_para.current_para.standby_current_max = 2;
     test_para.current_para.work_current_max = 15000;
-    test_para.current_para.work_current_min = 5000;
+    test_para.current_para.work_current_min = 6000;
 
     test_para.debug_para.debug_info_en = 1;
 

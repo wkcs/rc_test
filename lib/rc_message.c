@@ -10,9 +10,9 @@ void rc_send_message(uint8_t *buf, uint8_t len, uint8_t mes_type)
     tx_buf[3] = 0;
     tx_buf[4] = mes_type;
     tx_buf[5] = len;
-    send_data_to_uart_usb(tx_buf, 6);
+    send_data_to_uart1(tx_buf, 6);
     //delay_us(10);
     if (len > 0 && buf != 0)
-        send_data_to_uart_usb(buf, len);
+        send_data_to_uart1(buf, len);
     //delay_us(10);
 }

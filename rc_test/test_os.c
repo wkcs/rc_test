@@ -52,13 +52,13 @@ int32_t os_test(void)
 	if (buf == 0)
 		err = -OS_ADC_ERR;
 	else {
-		test_save.os_save.os_voltage_1 = (uint16_t)((float)(buf[8] + buf[20] + buf[32]) * 0.263672);   //0.263672 = (3240 / 4096 / 3)
+		/*test_save.os_save.os_voltage_1 = (uint16_t)((float)(buf[8] + buf[20] + buf[32]) * 0.263672);   //0.263672 = (3240 / 4096 / 3)
 		if (test_para.debug_para.debug_info_en)
 			rc_printf("os_voltage_1:%d mV\r\n", test_save.os_save.os_voltage_1);
 		if (test_save.os_save.os_voltage_1 < OS_VOL_LOW || test_save.os_save.os_voltage_1 > OS_VOL_HIGH) {
 			exit_os_test();
 			return -OS_ERR_1;
-		}
+		}*/
 
 		test_save.os_save.os_voltage_3 = (uint16_t)((float)(buf[11] + buf[23] + buf[35]) * 0.263672);   //0.263672 = (3240 / 4096 / 3)
 		if (test_para.debug_para.debug_info_en)
@@ -116,7 +116,7 @@ int32_t os_test(void)
 				return -OS_ERR_9;
 			}
 
-			test_save.os_save.os_voltage_10 = (uint16_t)((float)(buf[1] + buf[13] + buf[25]) * 0.263672);   //0.263672 = (3240 / 4096 / 3)
+			test_save.os_save.os_voltage_10 = (uint16_t)((float)(buf[2] + buf[14] + buf[26]) * 0.263672);   //0.263672 = (3240 / 4096 / 3)
 			if (test_para.debug_para.debug_info_en)
 				rc_printf("os_voltage_10:%d mV\r\n", test_save.os_save.os_voltage_10);
 			if (test_save.os_save.os_voltage_10 < OS_VOL_LOW || test_save.os_save.os_voltage_10 > OS_VOL_HIGH) {
@@ -124,7 +124,7 @@ int32_t os_test(void)
 				return -OS_ERR_10;
 			}
 
-			test_save.os_save.os_voltage_11 = (uint16_t)((float)(buf[2] + buf[14] + buf[26]) * 0.263672);   //0.263672 = (3240 / 4096 / 3)
+			test_save.os_save.os_voltage_11 = (uint16_t)((float)(buf[1] + buf[13] + buf[25]) * 0.263672);   //0.263672 = (3240 / 4096 / 3)
 			if (test_para.debug_para.debug_info_en)
 				rc_printf("os_voltage_11:%d mV\r\n", test_save.os_save.os_voltage_11);
 			if (test_save.os_save.os_voltage_11 < OS_VOL_LOW || test_save.os_save.os_voltage_11 > OS_VOL_HIGH) {
@@ -148,7 +148,7 @@ int32_t os_test(void)
 				return -OS_ERR_13;
 			}
 		} else {
-			test_save.os_save.os_voltage_5 = (uint16_t)((float)(buf[2] + buf[14] + buf[26]) * 0.263672);   //0.263672 = (3240 / 4096 / 3)
+			test_save.os_save.os_voltage_5 = (uint16_t)((float)(buf[1] + buf[13] + buf[25]) * 0.263672);   //0.263672 = (3240 / 4096 / 3)
 			if (test_para.debug_para.debug_info_en)
 				rc_printf("os_voltage_5:%d mV\r\n", test_save.os_save.os_voltage_5);
 			if (test_save.os_save.os_voltage_5 < OS_VOL_LOW || test_save.os_save.os_voltage_5 > OS_VOL_HIGH) {
