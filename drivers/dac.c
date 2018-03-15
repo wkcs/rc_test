@@ -1,4 +1,6 @@
 #include "dac.h"
+#include "test_type.h"
+#include "delay.h"
 
 void dac1_init(void)
 {
@@ -25,14 +27,21 @@ void dac1_init(void)
 	DAC_Init(DAC_Channel_1,&DAC_InitType);	 //初始化DAC通道1
 
 	DAC_Cmd(DAC_Channel_1, ENABLE);  //使能DAC通道1
-    /*此处先设置rc_power输出位3.3V*/
-	DAC_SetChannel1Data(DAC_Align_12b_R, 952);    //952
+    /*此处先设置rc_power为默认电压*/
+	rc_power_con_dac(test_para.voltage_para.default_voltage);    
 }
 
 /*
- *设置rc_power_con的电压值，以控制rc_power电压
+ * 设置rc_power_con的电压值，以控制rc_power电压
+ * V(mV) = 6710 - 0.357 * dac_val 
  */
 void rc_power_con_dac(uint16_t value)
 {
-    DAC_SetChannel1Data(DAC_Align_12b_R, value);  
+	uint16_t dac_val;
+	if (test_data.power_data.rc_power_voltage != value) {
+		dac_val = (uint16_t)(1879.551821 - 0.280112 * (double)value);
+    	DAC_SetChannel1Data(DAC_Align_12b_R, dac_val);
+		test_data.power_data.rc_power_voltage = value;
+		delay_ms(1);
+	}
 }

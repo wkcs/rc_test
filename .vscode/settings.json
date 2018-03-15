@@ -17,6 +17,8 @@
         "rc_debug.h": "c",
         "test_type.h": "c",
         "usbd_cdc_vcp.h": "c",
-        "usbd_usr.h": "c"
-    }
+        "usbd_usr.h": "c",
+        "sys.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
 }

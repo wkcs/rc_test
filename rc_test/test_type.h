@@ -233,6 +233,7 @@ typedef struct __test_machine_data
 typedef struct __power_data
 {
     uint8_t status;
+    uint16_t rc_power_voltage;
 } power_data_t;
 
 typedef struct __test_data
