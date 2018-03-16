@@ -1,0 +1,37 @@
+diff --git a/rc_test/test_current.c b/rc_test/test_current.c
+index 3b3a9ce..7104264 100644
+--- a/rc_test/test_current.c
++++ b/rc_test/test_current.c
+@@ -30,14 +30,12 @@ int32_t get_work_current(void)
+ 	uint16_t i, m = 0, *buf, temp;
+ 	uint16_t adc_max[3] = {0, 0, 0};
+ 	uint32_t adc_sum = 0;      /*ADC采样结果的总和*/
+-try_again:
+-	OS_TEST_3 = ENABLE;
++	OS_TEST_3 = ENABLE;       /*拉高led引脚，防止对工作电流产生影响*/
+ 	CURRENT_TETS_H = ENABLE;
+ 	CURRENT_TETS_L = DISABLE;
+-    delay_us(100);
++	delay_us(100);
++try_again:
+ 	buf = get_work_current_adc(WC_TEST_NUM);
+-	CURRENT_TETS_H = DISABLE;
+-	OS_TEST_3 = DISABLE;
+ 	if (buf == 0)
+ 		return -WORK_CURRENT_ADC_ERR;
+ 	for (i = 0; i < WC_TEST_NUM; i++) {
+@@ -50,10 +48,13 @@ try_again:
+ 				adc_max[2] = buf[i];
+ 		}
+ 	}
+-    if (adc_max[0] < 4000 && m < 20) {
++    if ((adc_max[0] < 2500 || adc_max[1] < 2500 || adc_max[2] < 2500) && m < 500) {
+         m++;
+         goto try_again;
+     }
++	/*断开电流测试*/
++	CURRENT_TETS_H = DISABLE;
++	OS_TEST_3 = DISABLE;
+ 	if (adc_max[1] == 0)
+ 		adc_max[1] = adc_max[0];
+ 	if (adc_max[2] == 0)
