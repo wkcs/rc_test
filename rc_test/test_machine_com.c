@@ -16,7 +16,7 @@ void test_mach_init(void)
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13; 
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;//普通输入模式
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;//100M
-    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;//上拉
+    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;//上拉
     GPIO_Init(GPIOD, &GPIO_InitStructure);//初始化GPIOD13
 
 
@@ -25,7 +25,7 @@ void test_mach_init(void)
     /* 配置EXTI_Line13 */
 	EXTI_InitStructure.EXTI_Line = EXTI_Line13;
     EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;//中断事件
-    EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising; //上升沿触发
+    EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling; //下降沿触发
     EXTI_InitStructure.EXTI_LineCmd = ENABLE;//中断线使能
     EXTI_Init(&EXTI_InitStructure);//配置
 
@@ -37,20 +37,20 @@ void test_mach_init(void)
 
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12; 
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;	//速度50MHz
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;	//速度50MHz
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP; //推挽输出
-	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP; //上拉
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN; //上拉
     GPIO_Init(GPIOD,&GPIO_InitStructure);
 
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15; 
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;	//速度50MHz
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;	//速度50MHz
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP; //推挽输出
-	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP; //上拉
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN; //上拉
     GPIO_Init(GPIOB,&GPIO_InitStructure);
 
-    GPIO_SetBits(GPIOD, GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12);
-    GPIO_SetBits(GPIOB, GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15);
+    GPIO_ResetBits(GPIOD, GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12);
+    GPIO_ResetBits(GPIOB, GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15);
 }
 
 /*
@@ -69,60 +69,60 @@ void test_mach_send_end_sig(uint8_t bin)
     switch(bin)
     {
         case 1:
-            BIN1 = 0;
-            EOT = 0;
-            delay_ms(2);
-            EOT = 1;
             BIN1 = 1;
+            EOT = 1;
+            delay_ms(2);
+            EOT = 0;
+            BIN1 = 0;
             break;
         case 2:
-            BIN2 = 0;
-            EOT = 0;
-            delay_ms(2);
-            EOT = 1;
             BIN2 = 1;
+            EOT = 1;
+            delay_ms(2);
+            EOT = 0;
+            BIN2 = 0;
             break;
         case 3:
-            BIN3 = 0;
-            EOT = 0;
-            delay_ms(2);
-            EOT = 1;
             BIN3 = 1;
+            EOT = 1;
+            delay_ms(2);
+            EOT = 0;
+            BIN3 = 0;
             break;
         case 4:
-            BIN4 = 0;
-            EOT = 0;
-            delay_ms(2);
-            EOT = 1;
             BIN4 = 1;
+            EOT = 1;
+            delay_ms(2);
+            EOT = 0;
+            BIN4 = 0;
             break;
         case 5:
-            BIN5 = 0;
-            EOT = 0;
-            delay_ms(2);
-            EOT = 1;
             BIN5 = 1;
+            EOT = 1;
+            delay_ms(2);
+            EOT = 0;
+            BIN5 = 0;
             break;
         case 6:
-            BIN6 = 0;
-            EOT = 0;
-            delay_ms(2);
-            EOT = 1;
             BIN6 = 1;
+            EOT = 1;
+            delay_ms(2);
+            EOT = 0;
+            BIN6 = 0;
             break;
         case 7:
-            BIN7 = 0;
-            EOT = 0;
-            delay_ms(2);
-            EOT = 1;
             BIN7 = 1;
+            EOT = 1;
+            delay_ms(2);
+            EOT = 0;
+            BIN7 = 0;
             break;
         case 8:
-            BIN8 = 0;
-            EOT = 0;
-            delay_ms(2);
-            EOT = 1;
             BIN8 = 1;
+            EOT = 1;
+            delay_ms(2);
+            EOT = 0;
+            BIN8 = 0;
             break;
         test_data.test_machine_data.test_start = DISABLE;
     }

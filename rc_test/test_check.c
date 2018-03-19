@@ -29,13 +29,13 @@ int32_t check_code_width(void)
     exit_test();
     start_sig();
     check_sig();
-    freq2 = get_freq(test_para.cal_para.bin_cal_test_num);
+    freq2 = get_freq(1000);
     if (freq2 <= 0)
     {
         power_restart(test_para.power_para.restart_time);
         start_sig();
         check_sig();
-        freq2 = get_freq(test_para.cal_para.bin_cal_test_num);
+        freq2 = get_freq(1000);
         if (freq2 <= 0)
             return freq2;
     }

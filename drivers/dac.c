@@ -39,6 +39,7 @@ void rc_power_con_dac(uint16_t value)
 {
 	uint16_t dac_val;
 	if (test_data.power_data.rc_power_voltage != value) {
+		/*这里要注意，rc_power电压设置不能超过3.7V，如果此电压过高会烧坏顶板上的MOS管*/
 		if (value > 3700)
 			value = 3700;
 		dac_val = (uint16_t)(1879.551821 - 0.280112 * (double)value);

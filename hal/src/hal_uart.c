@@ -20,25 +20,9 @@
 #define RCC_APBPeriph_UART3 RCC_APB1Periph_USART3
 
 
-typedef __uart_type {
-	USART_TypeDef *uart_device;
-	IRQn_Type irq;
-	struct stm32_uart_dma
-	{
-		/* dma stream */
-		DMA_Stream_TypeDef *rx_stream;
-		/* dma channel */
-		uint32_t rx_ch;
-		/* dma flag */
-		uint32_t rx_flag;
-		/* dma irq channel */
-		uint8_t rx_irq_ch;
-		/* setting receive len */
-		uint32_t setting_recv_len;
-		/* last receive index */
-		uint32_t last_recv_index;
-	} dma;
-} uart_type_t;
+typedef __uart_driver {
+	
+} uart_drive_t;
 
 int32_t hal_uart_init(uart_type_t *uart)
 {
