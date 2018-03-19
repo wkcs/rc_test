@@ -11,11 +11,13 @@
 #include "rc_debug.h"
 #include "rc_message.h"
 
+/*开始一次测试，返回分档结果*/
 uint8_t rc11x_test_start(void)
 {
     uint8_t bin;
     int32_t err;
     uint16_t data = 0;
+    /*测试前先初始化用于保存测试结果的结构体*/
     test_save_init();
     power_on(test_para.power_para.open_time);
     if (test_para.test_en_para.os_test_en)
@@ -138,6 +140,7 @@ uint8_t rc11x_test_start(void)
     return test_para.sub_bin_para.default_bin;
 }
 
+/*向上位机发送测试结果*/
 void send_test_results(void)
 {
     uint8_t tx_buf[79];

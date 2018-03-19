@@ -40,6 +40,7 @@ static inline void exit_os_test()
 	OS_TEST_13 = DISABLE;
 }
 
+
 int32_t os_test(void)
 {
 	int32_t err = 0;

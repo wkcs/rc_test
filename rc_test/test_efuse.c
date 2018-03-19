@@ -2,6 +2,7 @@
 #include "rc_err.h"
 #include "delay.h"
 
+/*烧录*/
 int32_t efuse_chip(uint8_t mode, uint16_t data, uint16_t test_num)
 {
     int32_t freq = 0;

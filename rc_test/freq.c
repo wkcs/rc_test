@@ -3,13 +3,19 @@
 #include "rc_err.h"
 #include "dma.h"
 
-uint16_t tim_ccr_data[10002];
+/*保存定时器ccr寄存器*/
+uint16_t tim_ccr_data[10002];    
 
+/*初始化频率采样使用的dma*/
 void freq_init(void)
 {
 	DMA_config(DMA1_Stream3, DMA_Channel_2, (uint32_t)&TIM4->CCR2, (uint32_t)tim_ccr_data, 1002);
 }
 
+/*
+ * 获取一次频率
+ * 成功时返回频率值，出错时返回具体的出错码
+ */
 int32_t get_freq(uint16_t test_num)
 {
 	uint32_t temp = 0, freq;

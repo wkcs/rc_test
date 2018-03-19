@@ -2,6 +2,7 @@
 #include "rc_math.h"
 #include "rc_debug.h"
 
+/*检测码宽*/
 int32_t check_code_width(void)
 {
     int32_t freq1, freq2;

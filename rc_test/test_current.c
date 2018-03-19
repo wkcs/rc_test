@@ -7,6 +7,7 @@
 #define SC_TEST_NUM 100        /*待机电流采样次数*/
 #define WC_TEST_NUM 100        /*工作电流采样次数*/
 
+/*获取待机电流*/
 int32_t get_standby_current(void)
 {
 	uint16_t i, *buf, temp;
@@ -25,11 +26,12 @@ int32_t get_standby_current(void)
 	return (int32_t)temp;
 }
 
+/*获取工作电流*/
 int32_t get_work_current(void)
 {
 	uint16_t i, m = 0, *buf, temp;
 	uint16_t adc_max[3] = {0, 0, 0};
-	uint32_t adc_sum = 0;      /*ADC采样结果的总和*/
+	//uint32_t adc_sum = 0;      /*ADC采样结果的总和*/
 	OS_TEST_3 = ENABLE;       /*拉高led引脚，防止对工作电流产生影响*/
 	CURRENT_TETS_H = ENABLE;
 	CURRENT_TETS_L = DISABLE;
@@ -64,6 +66,7 @@ try_again:
 	return (int32_t)temp;
 }
 
+/*待机电流测试*/
 int32_t standby_current_test(void)
 {
 	int32_t err;
@@ -87,6 +90,7 @@ int32_t standby_current_test(void)
 	return 0;
 }
 
+/*工作电流测试*/
 int32_t work_current_test(void)
 {
 	int32_t err;
@@ -159,6 +163,7 @@ int32_t work_current_test(void)
 	}
 	K3 = 0;
 
+	/*如果芯片是119则要检测更多的引脚*/
 	if (test_para.chip_para.chip_type == RC119_433 || test_para.chip_para.chip_type == RC119_315) {
 		K4 = 1;
 		err = get_work_current();

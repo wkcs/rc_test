@@ -4,11 +4,16 @@
 #include "rc_err.h"
 #include "test_cal.h"
 
+/*根据错误代码查找对应的分档*/
 uint8_t get_bin_from_err(int32_t err)
 {
-    return test_para.sub_bin_para.err_bin[RC_ABS(err) - 1];
+    if (err <= RC_ERR_NO_MAX)
+        return test_para.sub_bin_para.err_bin[RC_ABS(err) - 1];
+    else 
+        return test_para.sub_bin_para.err_bin[NOT_FIND_BIN - 1];
 }
 
+/*测试芯片频率并进行分档*/
 int32_t get_bin_from_freq(uint8_t *bin)
 {
     uint8_t i;

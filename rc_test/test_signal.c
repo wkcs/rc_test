@@ -58,6 +58,7 @@ char test_signal_init(void)
 	return 0;
 }
 
+/*产生开始信号*/
 char start_sig(void)
 {
 	uint32_t irq_save;
@@ -88,6 +89,7 @@ char start_sig(void)
 	return state;
 }
 
+/*产生修调信号*/
 char cal_sig(unsigned short int data)
 {
 	uint32_t irq_save;
@@ -117,6 +119,7 @@ char cal_sig(unsigned short int data)
 	return state;
 }
 
+/*产生烧录信号*/
 char efuse_sig(unsigned short int data)
 {
 	uint32_t irq_save;
@@ -146,6 +149,7 @@ char efuse_sig(unsigned short int data)
 	return state;
 }
 
+/*产生码宽检测信号*/
 char check_sig(void)
 {
 	uint32_t irq_save;
@@ -175,6 +179,7 @@ char check_sig(void)
 	return state;
 }
 
+/*推出测试模式*/
 void exit_test(void)
 {
 	uint32_t irq_save;

@@ -2,12 +2,14 @@
 #include "board.h"
 #include "rc_debug.h"
 
+/*测试参数头部，用于测试参数的校验*/
 #define TEST_PARA_HEAD 203044352
 
 test_para_t test_para;
 test_data_t test_data;
 test_save_t test_save;
 
+/*测试参数初始化*/
 void test_para_init(void)
 {
     uint32_t buf;
@@ -21,6 +23,7 @@ void test_para_init(void)
     }
 }
 
+/*测试参数恢复默认*/
 void test_para_restore(void)
 {
     uint32_t i;
@@ -90,17 +93,20 @@ void test_para_restore(void)
     W25QXX_Write((uint8_t *)(&test_para), 0, sizeof(test_para));
 }
 
+/*加载测试参数*/
 void test_para_load(void)
 {
     W25QXX_Read((uint8_t *)(&test_para), 0, sizeof(test_para));
 }
 
+/*保存测试参数*/
 void test_para_save(void)
 {
     W25QXX_Write((uint8_t *)(&test_para), 0, sizeof(test_para));
 }
 
 
+/*初始化保存测试结果的结构体*/
 void test_save_init(void)
 {
     test_save.chip_type_save.chip_type = test_para.chip_para.chip_type;

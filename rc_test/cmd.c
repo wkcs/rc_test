@@ -3,6 +3,7 @@
 
 static _cmd_list cmd_list[256];
 
+/*初始化命令列表*/
 int8_t cmd_init(void)
 {
 	cmd_test_para_init();

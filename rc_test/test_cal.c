@@ -8,6 +8,7 @@ static int32_t freq_err_temp[6];      //频率误差小于100时的误差值
 static uint16_t code_temp[6];         //频率误差小于100时的code
 static uint8_t freq_ok_num ;           //频率误差小于100个数
 
+/*
 void get_string_binary(uint32_t data, char *addr, uint8_t len)
 {
 	uint8_t num;
@@ -17,8 +18,9 @@ void get_string_binary(uint32_t data, char *addr, uint8_t len)
 		else
 			addr[num] = '0';
 	}
-}
+}*/
 
+/*进行一次修调*/
 int32_t cal_one(uint8_t mode, uint16_t data, uint16_t test_num)
 {
 	int32_t freq;
@@ -52,6 +54,7 @@ try_again:
 	return freq;
 }
 
+/*自动修调*/
 int32_t auto_cal(uint8_t mode, uint16_t *data, int32_t start_freq)
 {
 	uint8_t i;
@@ -134,7 +137,7 @@ int32_t auto_cal(uint8_t mode, uint16_t *data, int32_t start_freq)
 		return freq;
 }
 
-
+/*
 int32_t auto_cal_test(void)
 {
 	uint8_t i;
@@ -161,4 +164,4 @@ int32_t auto_cal_test(void)
 			return freq;
 	}
 	return 0;
-}
+}*/
