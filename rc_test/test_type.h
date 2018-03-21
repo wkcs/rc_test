@@ -9,7 +9,7 @@ extern "C" {
 #endif
 
 #define VERSION_1 2
-#define VERSION_2 0
+#define VERSION_2 1
 #define VERSION_3 0
 
 #define TYPE_NAME_CASE(x) case x: return (#x)
