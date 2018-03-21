@@ -20,7 +20,7 @@
 #include "rc_message.h"
 
 #define MES_DEVICE UART1
-#define USE_W25QXX 1U
+//#define USE_W25QXX 1U
 
 void rc11x_test_v3_board_init(void);
 

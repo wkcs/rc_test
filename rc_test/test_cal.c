@@ -24,14 +24,11 @@ void get_string_binary(uint32_t data, char *addr, uint8_t len)
 int32_t cal_one(uint8_t mode, uint16_t data, uint16_t test_num)
 {
 	int32_t freq;
-	uint8_t i = 0;
 	if (test_data.power_data.status == POWER_OFF) {
 		power_on(test_para.power_para.open_time);
 	}
 	if (test_data.test_mod != NORMAL_MODE)
 		exit_test();
-try_again:
-	exit_test();
 	//power_restart(2000);
 	start_sig();
 	//delay_us(40);
@@ -44,10 +41,6 @@ try_again:
 			cal_sig(data);
 			freq = get_freq(test_num);
 		}
-	}
-	if (freq < 20000 && freq > 0 && i < 10) {
-		i++;
-		goto try_again;
 	}
 	//power_off(test_para.power_para.clos_time);
 	exit_test();
