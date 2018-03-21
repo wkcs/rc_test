@@ -9,6 +9,12 @@ int8_t cmd_init(void)
 	cmd_test_para_init();
 	cmd_auto_efuse_init();
 	cmd_firmware_init();
+	cmd_cal_init();
+	cmd_efuse_init();
+	cmd_power_init();
+	cmd_exit_init();
+	cmd_change_target_freq_init();
+	cmd_auto_cal_init();
 	return 0;
 }
 

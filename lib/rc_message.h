@@ -10,7 +10,13 @@ extern "C" {
 typedef enum {
     TEST_PARA_MES = 0,       //测试参数
     TEST_SAVE_MES,           //测试数据
-    NULL_MES = 253,          //空白消息
+    FREQ_MES,
+    KEY_TEST_MES,
+    BOARD_MES,
+    CODE_MES,
+    TARGET_FREQ_ERR_MES = 251,
+    NO_FREQ_MES,
+    NULL_MES,          //空白消息
     RC_DEBUG_MES,            //debug消息
     FIRMWARE_MES             //版本消息
 }RC_MESSAGE; 

@@ -1,0 +1,20 @@
+#include "power.h"
+#include "cmd_list.h"
+#include "cmd.h"
+#include "test_type.h"
+
+#define CMD_POWER_OFF 0
+#define CMD_POWER_RESTART 1
+
+static void cmd_main(uint8_t *buf)
+{
+    if (buf[0] == CMD_POWER_OFF) 
+        power_on(test_para.power_para.clos_time);
+    else if (buf[0] == CMD_POWER_RESTART)
+        power_restart(test_para.power_para.restart_time);
+}
+
+char cmd_power_init(void)
+{
+    return add_cmd(CMD_POWER, cmd_main);
+}
