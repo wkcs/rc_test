@@ -13,9 +13,11 @@ int rc_test_loop(void)
 {
 	uint8_t bin;
 	uint32_t num = 0;
+	uint8_t *mes_buf, mes_len, mes_type;
 	
 	rc11x_test_v3_board_init();
 	test_para_init();
+	//test_para_restore();
 	print_test_para();
 	cmd_init();
 
@@ -40,10 +42,9 @@ int rc_test_loop(void)
 			test_mach_send_end_sig(bin);
 			send_test_results();
 			test_data.test_machine_data.test_start = DISABLE;
-		} else if (uart1_data.rx_status == 1) {
-			cmd_run(uart1_data.rx_buf[0], uart1_data.rx_buf);
-			uart1_data.rx_status = 0;
-			uart1_data.rx_len = 0;
+		} else if (rc_get_message(&mes_buf, &mes_len, &mes_type) == 1) {
+			cmd_run(mes_type, mes_buf);
+			rc_clear_message();
 		} else {
 			if (num == 1000000) {
 				rc_send_message(0, 0, NULL_MES);

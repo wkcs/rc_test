@@ -13,7 +13,11 @@ test_save_t test_save;
 void test_para_init(void)
 {
     uint32_t buf;
+#ifdef USE_W25QXX
     W25QXX_Read((uint8_t *)(&buf), 0, 4);
+#else
+    flash_read(ADDR_TEST_PARA, &buf, 1);
+#endif
     if (buf == TEST_PARA_HEAD)
         test_para_load();
     else {
@@ -89,20 +93,31 @@ void test_para_restore(void)
     test_para.current_para.work_current_min = 6000;
 
     test_para.debug_para.debug_info_en = 1;
-
+#ifdef USE_W25QXX
     W25QXX_Write((uint8_t *)(&test_para), 0, sizeof(test_para));
+#else
+    flash_write(ADDR_TEST_PARA, (uint32_t *)(&test_para), ((sizeof(test_para) % 4) ? (sizeof(test_para) / 4 + 1) : (sizeof(test_para) / 4)));
+#endif
 }
 
 /*加载测试参数*/
 void test_para_load(void)
 {
+#ifdef USE_W25QXX
     W25QXX_Read((uint8_t *)(&test_para), 0, sizeof(test_para));
+#else
+    flash_read(ADDR_TEST_PARA, (uint32_t *)(&test_para), ((sizeof(test_para) % 4) ? (sizeof(test_para) / 4 + 1) : (sizeof(test_para) / 4)));
+#endif
 }
 
 /*保存测试参数*/
 void test_para_save(void)
 {
+#ifdef USE_W25QXX
     W25QXX_Write((uint8_t *)(&test_para), 0, sizeof(test_para));
+#else
+    flash_write(ADDR_TEST_PARA, (uint32_t *)(&test_para), ((sizeof(test_para) % 4) ? (sizeof(test_para) / 4 + 1) : (sizeof(test_para) / 4)));
+#endif
 }
 
 

@@ -15,7 +15,16 @@ typedef enum {
     FIRMWARE_MES             //版本消息
 }RC_MESSAGE; 
 
+typedef enum {
+    USB = 1,
+    UART1,
+    UART2,
+    UART3 
+}MES_DEVICE_TYPE;
+
 void rc_send_message(uint8_t *buf, uint8_t len, uint8_t mes_type);
+uint8_t rc_get_message(uint8_t **buf, uint8_t *len, uint8_t *mes_type);
+void rc_clear_message(void);
 
 #ifdef __cplusplus
 }

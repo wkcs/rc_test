@@ -220,10 +220,10 @@ void load_para(void)
 
 static void cmd_main(uint8_t *buf)
 {
-    switch (buf[2])
+    switch (buf[0])
     {
     case 0:
-        save_para(buf + 3);
+        save_para(buf + 1);
         test_para_save();
         if (test_para.debug_para.debug_info_en)
             print_test_para();

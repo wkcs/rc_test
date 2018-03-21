@@ -16,7 +16,7 @@ void test_mach_init(void)
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13; 
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;//普通输入模式
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;//100M
-    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;//上拉
+    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;//下拉
     GPIO_Init(GPIOD, &GPIO_InitStructure);//初始化GPIOD13
 
 
@@ -30,8 +30,8 @@ void test_mach_init(void)
     EXTI_Init(&EXTI_InitStructure);//配置
 
     NVIC_InitStructure.NVIC_IRQChannel = EXTI15_10_IRQn;//外部中断15-10
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;//抢占优先级3
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;//子优先级2
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;//抢占优先级0
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;//子优先级1
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;//使能外部中断通道
     NVIC_Init(&NVIC_InitStructure);//配置
 

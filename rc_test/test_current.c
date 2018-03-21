@@ -23,6 +23,7 @@ int32_t get_standby_current(void)
 		adc_sum += buf[i];
 	}
 	temp = (uint16_t)((((float)adc_sum / SC_TEST_NUM) * 3300 / 4096 - 765 ) / 10 - 5);    /*结果为uA*/
+	//temp = (uint16_t)((((float)adc_sum / SC_TEST_NUM) * 3250 / 4096 - 765 ) / 10 - 6);    /*结果为uA*/
 	return (int32_t)temp;
 }
 
@@ -61,8 +62,8 @@ try_again:
 		adc_max[1] = adc_max[0];
 	if (adc_max[2] == 0)
 		adc_max[2] = adc_max[2];
-	//temp = (uint16_t)((((float)adc_sum / WC_TEST_NUM) * 3250 / 4096 - 11) * 10);    /*结果为uA*/
 	temp = (uint16_t)((((float)(adc_max[0] + adc_max[1] + adc_max[2]) / 3 * 0.38) * 3300 / 4096) * 10);    /*结果为uA*/
+	//temp = (uint16_t)((((float)(adc_max[0] + adc_max[1] + adc_max[2]) / 3 * 0.38) * 3250 / 4096) * 10);    /*结果为uA*/
 	return (int32_t)temp;
 }
 
