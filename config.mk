@@ -60,5 +60,7 @@ ASFLAGS += -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -c
 LDFLAGS = $(ARCH_FLAGS)
 LDFLAGS += $(FP_FLAGS)
 LDFLAGS += -specs=nano.specs -specs=nosys.specs -static
-LDFLAGS += -Wl,--start-group -lc -lm -Wl,--end-group -Wl,-cref,-u,Reset_Handler -Wl,-Map=$(TARGET).map -Wl,--gc-sections \
+LDFLAGS += -Wl,--start-group -lc -lm -Wl,--end-group -Wl,-cref,-u,Reset_Handler -Wl,-Map=$(TARGET).map   \
            -Wl,--defsym=malloc_getpagesize_P=0x80
+
+#-Wl,--gc-sections去除无用的段

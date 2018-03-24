@@ -90,7 +90,7 @@ char start_sig(void)
 }
 
 /*产生修调信号*/
-char cal_sig(unsigned short int data)
+char cal_sig(uint16_t data)
 {
 	uint32_t irq_save;
 	char state = 0, i;
@@ -120,7 +120,7 @@ char cal_sig(unsigned short int data)
 }
 
 /*产生烧录信号*/
-char efuse_sig(unsigned short int data)
+char efuse_sig(uint16_t data)
 {
 	uint32_t irq_save;
 	char state = 0, i;
@@ -179,20 +179,20 @@ char check_sig(void)
 	return state;
 }
 
-/*推出测试模式*/
+/*退出测试模式*/
 void exit_test(void)
 {
 	uint32_t irq_save;
 	irq_save = os_cpu_sr_save();
 	test_data.test_mod = NORMAL_MODE;
 	K2 = 1;
-	delay_us(100);
+	delay_us(500);
 	K2 = 0;
-	delay_us(100);
+	delay_us(500);
 	os_cpu_sr_restore(irq_save);
 }
 
-char cal_sig_114s(unsigned short int data)
+char cal_sig_114s(uint16_t data)
 {
 	char state = 0;
 	
@@ -213,7 +213,7 @@ char cal_sig_114s(unsigned short int data)
 	return state;
 }
 
-char efuse_sig_114s(unsigned short int data)
+char efuse_sig_114s(uint16_t data)
 {
 	char state = 0;
 

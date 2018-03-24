@@ -54,7 +54,7 @@ void test_para_restore(void)
     test_para.cal_para.freq_cal_test_num[8] = 1000;
     test_para.cal_para.freq_cal_test_num[9] = 1000;
     test_para.cal_para.start_cal_test_num = 1000;
-    test_para.cal_para.bin_cal_test_num = 1000;
+    test_para.cal_para.bin_cal_test_num = 3000;
 
     test_para.efuse_para.efuse_mode = 0;
     test_para.efuse_para.efuse_test_num = 1000;
@@ -72,7 +72,7 @@ void test_para_restore(void)
     for(i = 0; i < RC_ERR_NO_MAX; i++)
         test_para.sub_bin_para.err_bin[i] = 4;
     test_para.sub_bin_para.default_bin = 1;
-    test_para.sub_bin_para.sub_bin_cal_num = 3;
+    test_para.sub_bin_para.sub_bin_cal_num = 1;
 
     test_para.chip_para.chip_type = RC118_433;
     test_para.chip_para.code_width_type = RC_433_1_2;

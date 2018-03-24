@@ -39,6 +39,9 @@ enum TEST_MOD{
 #define CLK PEout(11)
 #define DATA PDout(15)
 
+//#define CLK PEout(13)
+//#define DATA PCout(7)
+
 /*114*/
 #define D0 PEout(10)
 #define D1 PEout(9)
@@ -68,12 +71,12 @@ enum TEST_MOD{
 
 char test_signal_init(void);
 char start_sig(void);
-char cal_sig(unsigned short int data);
-char efuse_sig(unsigned short int data);
+char cal_sig(uint16_t data);
+char efuse_sig(uint16_t data);
 char check_sig(void);
 void exit_test(void);
-char cal_sig_114s(unsigned short int data);
-char efuse_sig_114s(unsigned short int data);
+char cal_sig_114s(uint16_t data);
+char efuse_sig_114s(uint16_t data);
 
 #endif
 

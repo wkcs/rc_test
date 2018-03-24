@@ -5,12 +5,12 @@ USB_OTG_CORE_HANDLE    USB_OTG_dev;
 
 void rc11x_test_v3_board_init(void)
 {
-    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//设置系统中断优先级分组2
-	delay_init(168);		//延时初始化
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+	delay_init(168);		
 #if (MES_DEVICE == UART1) 
-	uart1_init(1382400);	//串口初始化波特率为1382400
+	uart1_init(1382400);	
 #endif
-    //uart3_init(1382400);	//串口初始化波特率为1382400
+    //uart3_init(1382400);	
     TIM4_Init(65535,0);
     adc_init();
     dac1_init();

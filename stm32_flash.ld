@@ -73,6 +73,15 @@ SECTIONS
     _etext = .;        /* define a global symbols at end of code */
   } >FLASH
 
+  cmd_list :
+  {
+    . = ALIGN(4);
+    _cmd_list_start = .;
+    *(cmd_list)
+    _cmd_list_end = .;
+    . = ALIGN(4);
+  } >FLASH
+
   /* Constant data goes into FLASH */
   .rodata :
   {

@@ -24,6 +24,7 @@ uint8_t rc11x_test_start(void)
     {
         rc_power_con_dac(test_para.voltage_para.default_voltage);  
         err = os_test();
+        //power_off(test_para.power_para.clos_time);
         if (err != 0)
         {
             if (test_para.debug_para.debug_info_en)
@@ -39,6 +40,7 @@ uint8_t rc11x_test_start(void)
     {
         rc_power_con_dac(test_para.voltage_para.default_voltage);  
         err = check_code_width();
+        //power_off(test_para.power_para.clos_time);
         if (err != 0)
         {
             if (test_para.debug_para.debug_info_en)
@@ -54,6 +56,7 @@ uint8_t rc11x_test_start(void)
     {
         rc_power_con_dac(test_para.voltage_para.default_voltage);  
         err = standby_current_test();
+        //power_off(test_para.power_para.clos_time);
         if (err != 0)
         {
             if (test_para.debug_para.debug_info_en)
@@ -69,6 +72,7 @@ uint8_t rc11x_test_start(void)
     {
         rc_power_con_dac(test_para.voltage_para.default_voltage);  
         err = work_current_test();
+        //power_off(test_para.power_para.clos_time);
         if (err != 0)
         {
             if (test_para.debug_para.debug_info_en)
@@ -85,6 +89,7 @@ uint8_t rc11x_test_start(void)
         rc_power_con_dac(test_para.voltage_para.default_voltage);  
         //err = auto_cal_test();
         err = auto_cal(test_para.cal_para.auto_cal_mode, &data, test_save.freq_save.start_freq);
+        //power_off(test_para.power_para.clos_time);
         if (err != 0)
         {
             if (test_para.debug_para.debug_info_en)
@@ -102,6 +107,7 @@ uint8_t rc11x_test_start(void)
             rc_power_con_dac(test_para.voltage_para.efuse_voltage);  
             err = efuse_chip(test_para.efuse_para.efuse_mode, data, 0);
             rc_power_con_dac(test_para.voltage_para.default_voltage);
+            //power_off(test_para.power_para.clos_time);
         }
         else
             err = 0;
