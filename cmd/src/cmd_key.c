@@ -6,7 +6,7 @@
 #include "rc_message.h"
 #include "delay.h"
 
-static void cmd_main(uint8_t *buf)
+static void cmd_main(uint8_t len, uint8_t *buf)
 {
 	int32_t freq;
 	//uint8_t mes_buf[4];

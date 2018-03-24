@@ -218,7 +218,7 @@ void load_para(void)
     rc_send_message(tx_buf + 2, 133, TEST_PARA_MES);
 }
 
-static void cmd_main(uint8_t *buf)
+static void cmd_main(uint8_t len, uint8_t *buf)
 {
     switch (buf[0])
     {

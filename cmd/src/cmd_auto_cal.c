@@ -10,7 +10,7 @@
 #include "rc_math.h"
 
 
-static void cmd_main(uint8_t *buf)
+static void cmd_main(uint8_t len, uint8_t *buf)
 {
     uint16_t data;
     int32_t freq, err;

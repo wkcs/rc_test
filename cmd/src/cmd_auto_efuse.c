@@ -2,7 +2,7 @@
 #include "cmd_list.h"
 #include "cmd.h"
 
-static void cmd_main(uint8_t *buf)
+static void cmd_main(uint8_t len, uint8_t *buf)
 {
     test_data.test_machine_data.test_start = ENABLE;
 }

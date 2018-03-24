@@ -6,7 +6,7 @@
 #define CMD_POWER_OFF 0
 #define CMD_POWER_RESTART 1
 
-static void cmd_main(uint8_t *buf)
+static void cmd_main(uint8_t len, uint8_t *buf)
 {
     if (buf[0] == CMD_POWER_OFF) 
         power_on(test_para.power_para.clos_time);
