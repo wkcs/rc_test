@@ -9,7 +9,6 @@
 #include "usbd_cdc_vcp.h"
 #include "rc_message.h"
 
-int aee = 12;
 
 int main(void)
 {
@@ -17,8 +16,6 @@ int main(void)
 	uint32_t num = 0;
 	uint8_t *mes_buf, mes_len, mes_type;
 	
-	num = aee;
-	num = 0;
 	rc11x_test_v3_board_init();
 	test_para_init();
 	//test_para_restore();

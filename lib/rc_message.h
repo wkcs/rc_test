@@ -12,7 +12,7 @@ typedef enum {
     TEST_SAVE_MES,           //测试数据
     DEBUG_MES_SAVE_MES = 249,
     CLEAN_MES = 250,
-    NULL_MES,          //空白消息
+    NULL_MES = 253,          //空白消息
     RC_DEBUG_MES,            //debug消息
     FIRMWARE_MES             //版本消息
 }RC_MESSAGE; 
