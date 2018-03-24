@@ -3,7 +3,7 @@
 #include "cmd.h"
 #include "rc_message.h"
 
-static void cmd_main(uint8_t *buf)
+static void cmd_main(uint8_t len, uint8_t *buf)
 {
     uint8_t tx_buf[4];
 
