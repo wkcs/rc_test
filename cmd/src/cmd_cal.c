@@ -26,8 +26,10 @@ static void cmd_main(uint8_t *buf)
     }
 }
 
-char cmd_cal_init(void)
-{
-    return add_cmd(CMD_CAL, cmd_main);
-}
+__attribute__((section("cmd_list"))) cmd_list_t cmd_cal = {
+    CMD_CAL,
+    cmd_main
+};
+
+
 

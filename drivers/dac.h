@@ -8,7 +8,6 @@ extern "C" {
 #endif 
 
 void dac1_init(void);
-void rc_power_con_dac(uint16_t value);
 
 /*
  *设置rc_power_con的电压值，以控制rc_power电压

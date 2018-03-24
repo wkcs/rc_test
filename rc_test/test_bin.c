@@ -26,6 +26,8 @@ int32_t get_bin_from_freq(uint8_t *bin)
     if (test_data.test_mod != NORMAL_MODE)
         exit_test();
 
+    //power_off(50);
+    //power_on(1000);
     /*先进入测试模式*/
     start_sig();
     cal_sig(0);

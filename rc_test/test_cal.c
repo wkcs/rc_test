@@ -4,9 +4,9 @@
 #include "freq.h"
 #include "rc_debug.h"
 
-static int32_t freq_err_temp[6];      //频率误差小于100时的误差值
-static uint16_t code_temp[6];         //频率误差小于100时的code
-static uint8_t freq_ok_num ;           //频率误差小于100个数
+//static int32_t freq_err_temp[6];      //频率误差小于100时的误差值
+//static uint16_t code_temp[6];         //频率误差小于100时的code
+//static uint8_t freq_ok_num ;           //频率误差小于100个数
 
 /*
 void get_string_binary(uint32_t data, char *addr, uint8_t len)
@@ -44,6 +44,7 @@ int32_t cal_one(uint8_t mode, uint16_t data, uint16_t test_num)
 	}
 	//power_off(test_para.power_para.clos_time);
 	exit_test();
+	//delay_ms(1);
 	return freq;
 }
 
@@ -54,34 +55,31 @@ int32_t auto_cal(uint8_t mode, uint16_t *data, int32_t start_freq)
 	uint16_t data_save;
 	int32_t freq_err, freq_err_old, freq;
 	*data = 0;
-	freq_ok_num = 0;
-	if (start_freq == 0) {
-		freq = cal_one(mode, *data, test_para.cal_para.start_cal_test_num);
+    if (start_freq == 0)
+	{
+	    freq = cal_one(mode, *data, test_para.cal_para.start_cal_test_num);
 		if (freq > 0)
 			test_save.freq_save.start_freq = freq;
 		else
 			return freq;
-	} else {
-		freq = start_freq;
+	}
+    else {
+        freq = start_freq;
 		test_save.freq_save.start_freq = start_freq;
 	}
-	if(freq > 0) {
-		if (test_para.freq_test_para.target_freq < freq) {
+	if(freq > 0)
+	{
+		if (test_para.freq_test_para.target_freq < freq)
+		{
 			return -TARGET_FREQ_TOO_LOW;
-		} else {
+		} else
+		{
 			for (i = 0; i < 10; i++) {
 				data_save = *data;
 				*data |= 0x0001 << (9 - i);
 				freq = cal_one(mode, *data, test_para.cal_para.freq_cal_test_num[i]);
+				//rc_printf("num:%d data:0x%x freq:%d\r\n", i, *data, freq);
 				if (freq > 0) {
-					if (i > 3) {
-						freq_err = freq - test_para.freq_test_para.target_freq;
-						if (RC_ABS(freq_err) < 100) {
-							freq_err_temp[freq_ok_num] = freq_err;
-							code_temp[freq_ok_num] = *data;
-							freq_ok_num++;
-						}
-					}
 					if (freq > test_para.freq_test_para.target_freq)
 						*data = data_save;
 					if (i == 9) {
@@ -92,39 +90,43 @@ int32_t auto_cal(uint8_t mode, uint16_t *data, int32_t start_freq)
 				} else
 					return freq;
 			}
-			test_save.freq_save.end_freq = freq;
-			if (freq_ok_num == 1) {
-				test_save.freq_save.code = code_temp[0];
-				*data = test_save.freq_save.code;
-			} else if (freq_ok_num > 1) {
-				freq_err = freq_err_temp[0];
-				test_save.freq_save.code = code_temp[0];
-				for (i = 1; i < freq_ok_num; i++) {
-					if (RC_ABS(freq_err) > RC_ABS(freq_err_temp[i])) {
-						freq_err = freq_err_temp[i];
-						test_save.freq_save.code = code_temp[i];
-					}
-				}
-				*data = test_save.freq_save.code;
-			} else {
-				freq = cal_one(mode, *data, test_para.cal_para.bin_cal_test_num);
+			//power_off(50);
+			//power_on(1000);
+			start_sig();
+    		cal_sig(*data);
+			for (i = 0; i < test_para.sub_bin_para.sub_bin_cal_num; i++) {
+				freq = get_freq(test_para.cal_para.bin_cal_test_num);
 				if(freq > 0) {
-					freq_err_old = freq - test_para.freq_test_para.target_freq;
-				} else
+					test_save.freq_save.end_freq = freq / (i + 1) + test_save.freq_save.end_freq * i / (i + 1);
+				} 
+				else
 					return freq;
-				(*data)++;
-				freq = cal_one(mode, *data, test_para.cal_para.bin_cal_test_num);
-				if(freq > 0) {
-					freq_err = freq - test_para.freq_test_para.target_freq;
-				} else
-					return freq;
-
-				if (RC_ABS(freq_err) > RC_ABS(freq_err_old)) {
-					(*data)--;
-				}
-				test_save.freq_save.code = *data;
 			}
-			return 0;
+			exit_test();
+			//rc_printf("data:0x%x freq:%d\r\n",*data, test_save.freq_save.end_freq);
+			freq_err_old = test_save.freq_save.end_freq - test_para.freq_test_para.target_freq;
+			power_off(50);
+			power_on(1000);
+			(*data)++;
+			start_sig();
+    		cal_sig(*data);
+			for (i = 0; i < test_para.sub_bin_para.sub_bin_cal_num; i++) {
+				freq = get_freq(test_para.cal_para.bin_cal_test_num);
+				if(freq > 0) {
+					test_save.freq_save.end_freq = freq / (i + 1) + test_save.freq_save.end_freq * i / (i + 1);
+				} 
+				else
+					return freq;
+			}
+			exit_test();
+			//rc_printf("data:0x%x freq:%d\r\n",*data, test_save.freq_save.end_freq);
+			freq_err = test_save.freq_save.end_freq - test_para.freq_test_para.target_freq;
+
+			if (RC_ABS(freq_err) > RC_ABS(freq_err_old))
+				(*data)--;
+			//test_save.freq_save.end_freq = freq;
+			test_save.freq_save.code = *data;
+            return 0;
 		}
 	} else
 		return freq;

@@ -14,7 +14,9 @@ typedef enum {
     KEY_TEST_MES,
     BOARD_MES,
     CODE_MES,
-    TARGET_FREQ_ERR_MES = 251,
+    DEBUG_MES_SAVE_MES = 249,
+    CLEAN_MES = 250,
+    TARGET_FREQ_ERR_MES,
     NO_FREQ_MES,
     NULL_MES,          //空白消息
     RC_DEBUG_MES,            //debug消息
@@ -31,6 +33,8 @@ typedef enum {
 void rc_send_message(uint8_t *buf, uint8_t len, uint8_t mes_type);
 uint8_t rc_get_message(uint8_t **buf, uint8_t *len, uint8_t *mes_type);
 void rc_clear_message(void);
+void rc_debug_mes_save_enable(void);
+void rc_debug_mes_save_disable(void);
 
 #ifdef __cplusplus
 }

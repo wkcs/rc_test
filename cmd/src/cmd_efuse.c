@@ -33,8 +33,9 @@ static void cmd_main(uint8_t *buf)
     rc_send_message(mes_buf, 4, FREQ_MES);
 }
 
-char cmd_efuse_init(void)
-{
-    return add_cmd(CMD_EFUSE, cmd_main);
-}
+__attribute__((section("cmd_list"))) cmd_list_t cmd_efuse = {
+    CMD_EFUSE,
+    cmd_main
+};
+
 

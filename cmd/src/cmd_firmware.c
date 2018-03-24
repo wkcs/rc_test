@@ -5,7 +5,7 @@
 
 #define PRO 1
 
-static void send_firmware(void)
+static void cmd_main(uint8_t *buf)
 {
     uint8_t tx_buf[8];
 
@@ -22,13 +22,9 @@ static void send_firmware(void)
     rc_send_message(tx_buf, 8, FIRMWARE_MES);
 }
 
-static void cmd_main(uint8_t *buf)
-{
-    send_firmware();
-}
+__attribute__((section("cmd_list"))) cmd_list_t cmd_firmware = {
+    CMD_FIRMWARE,
+    cmd_main
+};
 
-char cmd_firmware_init(void)
-{
-    return add_cmd(CMD_FIRMWARE, cmd_main);
-}
 

@@ -14,7 +14,8 @@ static void cmd_main(uint8_t *buf)
         power_restart(test_para.power_para.restart_time);
 }
 
-char cmd_power_init(void)
-{
-    return add_cmd(CMD_POWER, cmd_main);
-}
+__attribute__((section("cmd_list"))) cmd_list_t cmd_power = {
+    CMD_POWER,
+    cmd_main
+};
+

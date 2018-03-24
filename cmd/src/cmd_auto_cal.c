@@ -9,12 +9,13 @@
 #include "rc_err.h"
 #include "rc_math.h"
 
+
 static void cmd_main(uint8_t *buf)
 {
     uint16_t data;
     int32_t freq, err;
     uint8_t mes_buf[4];
-	err = auto_cal(test_para.cal_para.auto_cal_mode, &data, test_save.freq_save.start_freq);
+	err = auto_cal(test_para.cal_para.auto_cal_mode, &data, 0);
     if (err < 0) {
         switch (RC_ABS(err)) {
         case NO_FREQ: rc_send_message(0, 0, NO_FREQ_MES); break;
@@ -23,7 +24,10 @@ static void cmd_main(uint8_t *buf)
         }
         return;
     }
+    //rc_printf("code:0x%x\r\n", data);
+    power_restart(5000);
     freq = cal_one(test_para.cal_para.auto_cal_mode, data, test_para.cal_para.start_cal_test_num);
+    //rc_printf("freq:%d\r\n", freq);
     if (freq < 0)
         rc_send_message(0, 0, NO_FREQ_MES);
     else
@@ -40,7 +44,7 @@ static void cmd_main(uint8_t *buf)
     }
 }
 
-char cmd_auto_cal_init(void)
-{
-    return add_cmd(CMD_AUTO_CAL, cmd_main);
-}
+__attribute__((section("cmd_list"))) cmd_list_t cmd_auto_cal = {
+    CMD_AUTO_CAL,
+    cmd_main
+};

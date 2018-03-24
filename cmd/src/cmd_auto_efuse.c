@@ -7,8 +7,10 @@ static void cmd_main(uint8_t *buf)
     test_data.test_machine_data.test_start = ENABLE;
 }
 
-char cmd_auto_efuse_init(void)
-{
-    return add_cmd(CMD_AUTO_EFUSE, cmd_main);
-}
+__attribute__((section("cmd_list"))) cmd_list_t cmd_auto_efuse = {
+    CMD_AUTO_EFUSE,
+    cmd_main
+};
+
+
 

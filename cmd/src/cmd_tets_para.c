@@ -238,7 +238,9 @@ static void cmd_main(uint8_t *buf)
     }
 }
 
-char cmd_test_para_init(void)
-{
-    return add_cmd(CMD_TEST_PARA, cmd_main);
-}
+__attribute__((section("cmd_list"))) cmd_list_t cmd_test_para = {
+    CMD_TEST_PARA,
+    cmd_main
+};
+
+

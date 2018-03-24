@@ -7,7 +7,8 @@ static void cmd_main(uint8_t *buf)
     exit_test();
 }
 
-char cmd_exit_init(void)
-{
-    return add_cmd(CMD_EXIT, cmd_main);
-}
+__attribute__((section("cmd_list"))) cmd_list_t cmd_exit = {
+    CMD_EXIT,
+    cmd_main
+};
+

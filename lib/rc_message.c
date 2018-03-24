@@ -57,4 +57,17 @@ void rc_clear_message(void)
 	uart_usb_data.rx_status = 0;
 	uart_usb_data.rx_len = 0;
 #endif
+    rc_send_message(0, 0, CLEAN_MES);
+}
+
+void rc_debug_mes_save_enable(void)
+{
+    uint8_t mes = 1;
+    rc_send_message(&mes, 1, DEBUG_MES_SAVE_MES);
+}
+
+void rc_debug_mes_save_disable(void)
+{
+    uint8_t mes = 0;
+    rc_send_message(&mes, 1, DEBUG_MES_SAVE_MES);
 }
