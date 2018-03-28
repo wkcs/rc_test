@@ -48,7 +48,7 @@ uint8_t rc_get_message(uint8_t **buf, uint8_t *len, uint8_t *mes_type)
 #endif
 }
 
-void rc_clear_message(void)
+void rc_clean_message(void)
 {
 #if (MES_DEVICE == UART1)
     uart1_data.rx_status = 0;

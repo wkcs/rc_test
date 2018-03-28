@@ -44,7 +44,7 @@ int main(void)
 			test_data.test_machine_data.test_start = DISABLE;
 		} else if (rc_get_message(&mes_buf, &mes_len, &mes_type) == 1) {
 			cmd_run(mes_type, mes_len, mes_buf);
-			rc_clear_message();
+			rc_clean_message();
 		} else {
 			if (num == 1000000) {
 				rc_send_message(0, 0, NULL_MES);
