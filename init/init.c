@@ -47,6 +47,7 @@ int main(void)
 		} else {
 			if (num == 1000000) {
 				rc_send_message(0, 0, NULL_MES);
+				rc_send_message(0, 0, CLEAN_MES);     //发送此消息时可以确定消息处理已完成，可以防止上位机没有接收到这个消息
 				num = 0;
 			} else
 				num++;
