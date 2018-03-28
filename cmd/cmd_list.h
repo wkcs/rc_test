@@ -18,8 +18,9 @@ typedef enum {
 	CMD_AUTO_CAL,
 	CMD_KEY_TEST,
 	CMD_KEY,
+	CMD_HELLO,
 	CMD_FIRMWARE = 255
-} cmd_num_list;
+} cmd_id_list;
 
 
 #ifdef __cplusplus

@@ -16,7 +16,7 @@ void test_mach_init(void)
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13; 
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;//普通输入模式
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;//100M
-    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;//下拉
+    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
     GPIO_Init(GPIOD, &GPIO_InitStructure);//初始化GPIOD13
 
 
@@ -25,7 +25,7 @@ void test_mach_init(void)
     /* 配置EXTI_Line13 */
 	EXTI_InitStructure.EXTI_Line = EXTI_Line13;
     EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;//中断事件
-    EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling; //下降沿触发
+    EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling; //上升沿触发
     EXTI_InitStructure.EXTI_LineCmd = ENABLE;//中断线使能
     EXTI_Init(&EXTI_InitStructure);//配置
 
@@ -70,58 +70,74 @@ void test_mach_send_end_sig(uint8_t bin)
     {
         case 1:
             BIN1 = 1;
+            delay_ms(5);
             EOT = 1;
-            delay_ms(2);
+            delay_ms(10);
             EOT = 0;
+            delay_ms(5);
             BIN1 = 0;
             break;
         case 2:
             BIN2 = 1;
+            delay_ms(5);
             EOT = 1;
-            delay_ms(2);
+            delay_ms(10);
             EOT = 0;
+            delay_ms(5);
             BIN2 = 0;
             break;
         case 3:
             BIN3 = 1;
+            delay_ms(5);
             EOT = 1;
-            delay_ms(2);
+            delay_ms(10);
             EOT = 0;
+            delay_ms(5);
             BIN3 = 0;
             break;
         case 4:
             BIN4 = 1;
+            delay_ms(5);
             EOT = 1;
-            delay_ms(2);
+            delay_ms(10);
             EOT = 0;
+            delay_ms(5);
             BIN4 = 0;
             break;
         case 5:
             BIN5 = 1;
+            delay_ms(5);
             EOT = 1;
-            delay_ms(2);
+            delay_ms(10);
             EOT = 0;
+            delay_ms(5);
             BIN5 = 0;
             break;
         case 6:
             BIN6 = 1;
+            delay_ms(5);
             EOT = 1;
-            delay_ms(2);
+            delay_ms(10);
             EOT = 0;
+            delay_ms(5);
             BIN6 = 0;
             break;
         case 7:
             BIN7 = 1;
+            delay_ms(5);
             EOT = 1;
-            delay_ms(2);
+            delay_ms(10);
             EOT = 0;
+            delay_ms(5);
             BIN7 = 0;
             break;
         case 8:
             BIN8 = 1;
+            delay_ms(5);
             EOT = 1;
-            delay_ms(2);
+            delay_ms(10);
             EOT = 0;
+            delay_ms(5);
             BIN8 = 0;
             break;
         test_data.test_machine_data.test_start = DISABLE;

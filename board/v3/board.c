@@ -8,7 +8,7 @@ void rc11x_test_v3_board_init(void)
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 	delay_init(168);		
 #if (MES_DEVICE == UART1) 
-	uart1_init(1382400);	
+	uart1_init(921600);	
 #endif
     //uart3_init(1382400);	
     TIM4_Init(65535,0);

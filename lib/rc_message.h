@@ -32,7 +32,7 @@ typedef enum {
 
 void rc_send_message(uint8_t *buf, uint8_t len, uint8_t mes_type);
 uint8_t rc_get_message(uint8_t **buf, uint8_t *len, uint8_t *mes_type);
-void rc_clear_message(void);
+void rc_clean_message(void);
 void rc_debug_mes_save_enable(void);
 void rc_debug_mes_save_disable(void);
 
