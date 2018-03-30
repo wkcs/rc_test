@@ -23,7 +23,7 @@ int32_t get_standby_current(void)
 		adc_sum += buf[i];
 	}
 	//temp = (uint16_t)((((float)adc_sum / SC_TEST_NUM) * 3300 / 4096 - 765 ) / 10 - 5);    /*结果为uA*/
-	temp = (uint16_t)((((float)adc_sum / SC_TEST_NUM) * 3250 / 4096 - 765 ) / 10 - 6);    /*结果为uA*/
+	temp = (uint16_t)((((float)adc_sum / SC_TEST_NUM) * 3265 / 4096) / 10 - 90);    /*结果为uA*/
 	return (int32_t)temp;
 }
 

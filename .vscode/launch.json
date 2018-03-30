@@ -13,7 +13,7 @@
                 "cwd": "${workspaceRoot}",
                 "executable": "./rc11x_test.elf",
                 "device": "STM32F407VE",
-                "svdFile": "",
+                "svdFile": "${workspaceRoot}/STM32F40x.svd",
                 "configFiles": [
                     "${workspaceRoot}/openocd.cfg"
                 ]

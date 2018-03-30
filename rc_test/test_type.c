@@ -125,7 +125,7 @@ void test_para_save(void)
 void test_save_init(void)
 {
     test_save.chip_type_save.chip_type = test_para.chip_para.chip_type;
-    test_save.chip_type_save.code_width_type = test_para.chip_para.code_width_type;
+    test_save.chip_type_save.code_width_type = 0;
 
     test_save.freq_save.code = 0;
     test_save.freq_save.target_freq = test_para.freq_test_para.target_freq;

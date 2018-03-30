@@ -28,12 +28,12 @@ void dac1_init(void)
 
 	DAC_Cmd(DAC_Channel_1, ENABLE);  //使能DAC通道1
     /*此处先设置rc_power为默认电压*/
-	rc_power_con_dac(3300);    
+	rc_power_con_dac(3300);
 }
 
 /*
  * 设置rc_power_con的电压值，以控制rc_power电压
- *  
+ *
  */
 void rc_power_con_dac(uint16_t value)
 {
@@ -42,8 +42,9 @@ void rc_power_con_dac(uint16_t value)
 		/*这里要注意，rc_power电压设置不能超过3.7V，如果此电压过高会烧坏顶板上的MOS管*/
 		if (value > 3700)
 			value = 3700;
-		//dac_val = (uint16_t)(1875.675676 - 0.27027 * (double)value); //V(mV) = 6940 - 3.7 * dac_val
-		dac_val = (uint16_t)(1879.551821 - 0.280112 * (double)value); //V(mV) = 6710 - 3.57 * dac_val
+		//dac_val = (uint16_t)((double)(6710 - value) / 3.57); //V(mV) = 6710 - 3.57 * dac_val
+		//dac_val = (uint16_t)((double)(6940 - value) / 3.7); //V(mV) = 6940 - 3.7 * dac_val
+		dac_val = (uint16_t)((double)(7060 - value) / 3.11); 
     	DAC_SetChannel1Data(DAC_Align_12b_R, dac_val);
 		test_data.power_data.rc_power_voltage = value;
 		delay_ms(1);
